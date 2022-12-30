@@ -185,6 +185,7 @@ export default {
 	.left-panel {
 		height: 100%;
 		background-color: var(--n-bg-color-base);
+		backdrop-filter: blur(5px);
 	}
 
 	.main-panel {
@@ -198,6 +199,7 @@ export default {
 			height: 40px;
 			width: 100%;
 			background-color: var(--n-bg-color-base);
+			backdrop-filter: blur(5px);
 
 			&.drag {
 				-webkit-app-region: drag;

@@ -1,6 +1,5 @@
 {
-    "Welcome": "Welcome",
-    "Login": "My NxShell",
+
     "lock": {
         "lock_desc": "Lock Setting",
         "password_desc": "Password Code",
@@ -44,6 +43,8 @@
         }
     },
     "app": {
+        "welcome": "Welcome",
+        "login": "My NxShell",
         "powertools-shell": "NxShell",
         "theme": {
             "dark": "Dark",
@@ -87,8 +88,8 @@
             },
             "dialog-delete-confirm": {
                 "title": "Delete session",
-                "delete-node": "Are you sure to delete session $0? The connection of the session will be disconnected and the operation is irreversible.",
-                "delete-folder": "Are you sure to delete session folder $0? All subfolders and sessions under this folder will be deleted and all relative connections will be disconnected."
+                "delete-node": "Are you sure to delete session {0}? The connection of the session will be disconnected and the operation is irreversible.",
+                "delete-folder": "Are you sure to delete session folder {0}? All subfolders and sessions under this folder will be deleted and all relative connections will be disconnected."
             },
             "session-tree": {
                 "no-session-data": "No session data",
@@ -405,7 +406,7 @@
             "reconnect": "Reconnect",
             "SFTP": "SFTP file transfer",
             "tunnel": "SSH tunnel",
-            "tunnel-success": "Socks5 listen on port $0",
+            "tunnel-success": "Socks5 listen on port {0}",
             "sftp-notice": "SFTP is comming soon and should be ready in next version",
             "tunnel-notice": "SSH tunnel is comming soon and should be ready in next version",
             "ctrldelete": "Ctrl + Delete",
@@ -501,7 +502,7 @@
                 "perms": "Permissions",
                 "size": "Size",
                 "modify-time": "Modify time",
-                "modify-time-format": "$0",
+                "modify-time-format": "{0}",
                 "user": "User",
                 "group": "Group",
                 "type": "Type"
@@ -528,15 +529,15 @@
             "confirm-dialogs": {
                 "delete-file": {
                     "title": "Delete file",
-                    "message": "Are you sure to delete the file:$0 ？"
+                    "message": "Are you sure to delete the file:{0} ？"
                 },
                 "delete-dir": {
                     "title": "Delete directory",
-                    "message":"Are you sure to delete directory $0 ？All sub directorys and files under this directory will be deleted recursively!"
+                    "message":"Are you sure to delete directory {0} ？All sub directorys and files under this directory will be deleted recursively!"
                 },
                 "delete-many": {
                     "title": "Delete multiple items",
-                    "message": "You have selected $0 items，Are you sure to delete them at same time?"
+                    "message": "You have selected {0} items，Are you sure to delete them at same time?"
                 },
                 "not-allow-open-file": {
                     "title": "Open File size Exceed 3M",
@@ -544,29 +545,29 @@
                 },
                 "errors": {
                     "title": "Error",
-                    "path-not-exist": "Path: $0 does not exist.",
-                    "error-message": "Error message: $0",
-                    "upload-error": "Update load error: $0",
-                    "download-error:": "Download error: $0"
+                    "path-not-exist": "Path: {0} does not exist.",
+                    "error-message": "Error message: {0}",
+                    "upload-error": "Update load error: {0}",
+                    "download-error:": "Download error: {0}"
                 }
             },
             "ask-dialogs": {
                 "merge": {
                     "title": "Merge or escape",
-                    "message": "Directory with same name found:$0",
+                    "message": "Directory with same name found:{0}",
                     "keep": "Keep same action for subsequent directories with same name",
-                    "dir-info-name": "Name of directory:$0",
-                    "dir-info-lastmodify": "Last modify time:$0"
+                    "dir-info-name": "Name of directory:{0}",
+                    "dir-info-lastmodify": "Last modify time:{0}"
                 },
                 "overwrite": {
                     "title": "Replace or escape",
-                    "message": "File with same name found:$0",
-                    "source": "Source file:$0",
-                    "dest": "Destination file: $0",
+                    "message": "File with same name found:{0}",
+                    "source": "Source file:{0}",
+                    "dest": "Destination file: {0}",
                     "keep": "Keep same action for subsequent files with same name",
-                    "file-info-name": "Fine name: $0",
-                    "file-info-size": "Size: $0 B",
-                    "file-info-lastmodify": "Last modify time: $0"
+                    "file-info-name": "Fine name: {0}",
+                    "file-info-size": "Size: {0} B",
+                    "file-info-lastmodify": "Last modify time: {0}"
                 },
                 "common-buttons": {
                     "btn-merge": "Merge",
@@ -582,17 +583,17 @@
                 "save-folder": "Save directory"
             },
             "mainview": {
-                "total-file-count": "$0 itme(s)",
-                "total-selected-count": "Totally $0 item(s),you have selected $1 item(s)",
+                "total-file-count": "{0} itme(s)",
+                "total-selected-count": "Totally {0} item(s),you have selected {1} item(s)",
                 "search-tab": "Please input search file name",
                 "go-back": "Back",
                 "go-forward": "Forward",
                 "go-up": "Parent Directory",
                 "go-refresh": "Refresh",
                 "progress": {
-                    "delete": "$0 item(s) have been deleted in $1 item(s)",
-                    "upload": "$0 item(s) will be upladed,remaining $1 item(s)",
-                    "download": "$0 item(s) will be downloaded, remaining $1 item(s)",
+                    "delete": "{0} item(s) have been deleted in {1} item(s)",
+                    "upload": "{0} item(s) will be upladed,remaining {1} item(s)",
+                    "download": "{0} item(s) will be downloaded, remaining {1} item(s)",
                     "prepare-download": "Prepare to download...",
                     "prepare-upload": "Prepare to upload...",
                     "donwload-finished": "All files have been downloaded.",
@@ -606,7 +607,7 @@
                     "group": "User group",
                     "lastModify": "Last modify time",
                     "perms": "Permissions",
-                    "fmt-time": "$0"
+                    "fmt-time": "{0}"
                 },
                 "file-types": {
                     "dir": "Directory",

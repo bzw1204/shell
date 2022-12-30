@@ -6,21 +6,22 @@
 		<div class="n-setting-content">
 			<el-scrollbar>
 				<el-row :gutter="40">
-					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="n-terminal-preview">
-						<nx-terminal-preview :context="settingsForm" />
-					</el-col>
-					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+<!--					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="n-terminal-preview">-->
+<!--&lt;!&ndash;						<nx-terminal-preview :theme-name="settingsForm.xtermTheme" />&ndash;&gt;-->
+<!--					</el-col>-->
+					<el-col :xs="24" :sm="48" :md="24" :lg="12" :xl="12">
 						<el-row :gutter="40" style="margin-bottom: 20px">
-							<el-col :span="8" class="n-setting-content__label">{{ T(termTheme.title) }}</el-col>
-							<el-col :span="16">
-								<el-select v-model="settingsForm[termTheme.name]" @change="handlerSettingChange">
-									<el-option
-										v-for="(item, index) in termTheme.options"
-										:label="T(item.label)"
-										:value="item.value"
-										:key="index"
-									/>
-								</el-select>
+							<el-col :span="8" class="n-setting-content__label">{{ $t(termTheme.title) }}</el-col>
+							<el-col :span="40">
+<!--								<el-select v-model="settingsForm[termTheme.name]" @change="handlerSettingChange">-->
+<!--									<el-option-->
+<!--										v-for="(item, index) in termTheme.options"-->
+<!--										:label="$t(item.label)"-->
+<!--										:value="item.value"-->
+<!--										:key="index"-->
+<!--									/>-->
+<!--								</el-select>-->
+								<theme-list style="height: 200px;" @change="handlerSettingChange"/>
 							</el-col>
 						</el-row>
 						<el-row :gutter="40" style="margin-bottom: 20px">
@@ -88,7 +89,7 @@
 					</el-col>
 					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
 						<el-row :gutter="40" style="margin-bottom: 20px">
-							<el-col :span="8" class="n-setting-content__label">{{ T(lineHeight.title) }}</el-col>
+							<el-col :span="8" class="n-setting-content__label">{{ $t(lineHeight.title) }}</el-col>
 							<el-col :span="16">
 								<el-input-number
 									v-model="settingsForm[lineHeight.name]"
@@ -135,12 +136,12 @@
 				<el-row :gutter="40">
 					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
 						<el-row :gutter="40" style="margin-bottom: 20px">
-							<el-col :span="8" class="n-setting-content__label">{{ T(language.title) }}</el-col>
+							<el-col :span="8" class="n-setting-content__label">{{ $t(language.title) }}</el-col>
 							<el-col :span="16">
 								<el-select v-model="settingsForm[language.name]" @change="handlerSettingChange">
 									<el-option
 										v-for="(item, index) in language.options"
-										:label="T(item.label)"
+										:label="$t(item.label)"
 										:value="item.value"
 										:key="index"
 									/>
@@ -182,14 +183,17 @@ import {
 	language
 } from "./constants";
 import { settingFormReset } from './constants/default.js'
+import ThemeList from '@/views/xterm/components/ThemeList.vue'
 
 export default {
 	name: 'NxSettings',
-	components: { NxTerminalPreview },
+	components: { ThemeList, NxTerminalPreview },
 	data() {
 		return {
 			settingFormReset,
-			settingsForm: {},
+			settingsForm: {
+				termTheme: 'default'
+			},
 			fontList: [],
 			settingsDefinition: [],
 			terminalOptions: {
@@ -218,7 +222,7 @@ export default {
 			const storeSetting = globalSetting.getProfile('xterm')
 			// 获取系统字体列表
 			this.getSystemFonts()
-			this.settingsForm = {...this.settingFormReset,...storeSetting}
+			this.settingsForm = { ...this.settingFormReset, ...storeSetting }
 		},
 		async handlerSettingChange() {
 			const defaultSettings = globalSetting.getProfile('xterm') ?? {}
@@ -261,6 +265,7 @@ export default {
 	.n-setting-header {
 		margin-bottom: 20px;
 		color: var(--n-text-color-base);
+
 		&__left {
 			display: flex;
 			justify-content: flex-start;
@@ -273,22 +278,26 @@ export default {
 	.n-setting-content {
 		overflow-x: hidden;
 		height: calc(100% - 71px);
+
 		.n-terminal-preview {
 			position: sticky;
 			top: 0;
 			margin-bottom: 20px;
 			z-index: 9;
 		}
+
 		&__label {
 			color: var(--n-text-color-base);
 		}
 	}
 }
+
 .n-theme-color {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	flex-wrap: wrap;
+
 	.n-theme-color-tag-wrapper {
 		display: flex;
 		justify-content: flex-start;
@@ -296,10 +305,12 @@ export default {
 		width: 150px;
 		flex-wrap: wrap;
 	}
+
 	.n-theme-color-tag {
 		width: 10px;
 		height: 10px;
 		border-radius: 50%;
+
 		&:not(:last-child) {
 			margin: 2px;
 		}

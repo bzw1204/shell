@@ -1,6 +1,4 @@
 {
-    "Welcome": "欢迎使用",
-    "Login": "我的NxShell",
     "lock": {
         "lock_desc": "锁定设置",
         "password_desc": "锁定密码",
@@ -9,7 +7,6 @@
         "unlock_password_desc": "解锁密码",
         "placeholder": "请输入锁屏密码",
         "placeholder-verify": "请再次输入锁屏密码"
-
     },
     "components": {
         "OK": "确定",
@@ -47,6 +44,8 @@
         }
     },
     "app": {
+        "welcome": "欢迎使用",
+        "login": "我的NxShell",
         "powertools-shell": "NxShell",
         "theme": {
             "dark": "暗黑",
@@ -90,8 +89,8 @@
             },
             "dialog-delete-confirm": {
                 "title": "删除会话",
-                "delete-node": "您确定要删除会话“$0”吗？删除后该会话对应的连接也将同时被关闭，且不能被恢复！",
-                "delete-folder": "您确定要删除会话目录“$0”吗？该目录下所有的子目录、会话配置都将被删除，会话对应的连接也将被关闭！"
+                "delete-node": "您确定要删除会话“{0}”吗？删除后该会话对应的连接也将同时被关闭，且不能被恢复！",
+                "delete-folder": "您确定要删除会话目录“{0}”吗？该目录下所有的子目录、会话配置都将被删除，会话对应的连接也将被关闭！"
             },
             "session-tree": {
                 "no-session-data": "暂无会话信息",
@@ -408,7 +407,7 @@
             "reconnect": "重新连接",
             "SFTP": "SFTP文件传输",
             "tunnel": "SSH通道",
-            "tunnel-success": "Socks5 监听在端口 $0",
+            "tunnel-success": "Socks5 监听在端口 {0}",
             "sftp-notice": "SFTP功能正在开发中，敬请期待！",
             "tunnel-notice": "SSH通道功能正在开发中，敬请期待！",
             "ctrldelete": "Ctrl + Delete",
@@ -503,7 +502,7 @@
                 "perms": "权限",
                 "size": "大小",
                 "modify-time": "修改时间",
-                "modify-time-format": "$0",
+                "modify-time-format": "{0}",
                 "user": "用户",
                 "group": "组",
                 "type": "类型"
@@ -530,15 +529,15 @@
             "confirm-dialogs": {
                 "delete-file": {
                     "title": "删除文件",
-                    "message": "你确定要删除文件：$0 吗？"
+                    "message": "你确定要删除文件：{0} 吗？"
                 },
                 "delete-dir": {
                     "title": "删除目录",
-                    "message": "你确定要删除文件夹：$0 吗？在删除该文件夹的同时，文件夹下的子文件夹和文件也将一并被删除！"
+                    "message": "你确定要删除文件夹：{0} 吗？在删除该文件夹的同时，文件夹下的子文件夹和文件也将一并被删除！"
                 },
                 "delete-many": {
                     "title": "删除多个项目",
-                    "message": "你选择了 $0 个项目，确定删除这些项目吗！"
+                    "message": "你选择了 {0} 个项目，确定删除这些项目吗！"
                 },
                 "not-allow-open-file": {
                     "title": "打开文件超过3M",
@@ -546,29 +545,29 @@
                 },
                 "errors": {
                     "title": "错误",
-                    "path-not-exist": "路径: $0 不存在！",
-                    "error-message": "错误： $0",
-                    "upload-error": "上传错误： $0",
-                    "download-error": "下载错误： $0"
+                    "path-not-exist": "路径: {0} 不存在！",
+                    "error-message": "错误： {0}",
+                    "upload-error": "上传错误： {0}",
+                    "download-error": "下载错误： {0}"
                 }
             },
             "ask-dialogs": {
                 "merge": {
                     "title": "合并或跳过",
-                    "message": "发现相同名称的目录：$0",
+                    "message": "发现相同名称的目录：{0}",
                     "keep": "后续目录重复时执行相同的操作",
-                    "dir-info-name": "目录名：$0",
-                    "dir-info-lastmodify": "最后修改日期：$0"
+                    "dir-info-name": "目录名：{0}",
+                    "dir-info-lastmodify": "最后修改日期：{0}"
                 },
                 "overwrite": {
                     "title": "替换或跳过",
-                    "message": "发现相同的文件名称：$0",
-                    "source": "来源：$0",
-                    "dest": "目标: $0",
+                    "message": "发现相同的文件名称：{0}",
+                    "source": "来源：{0}",
+                    "dest": "目标: {0}",
                     "keep": "后续文件重复时执行相同的操作",
-                    "file-info-name": "文件名: $0",
-                    "file-info-size": "大小: $0 B",
-                    "file-info-lastmodify": "最后修改日期: $0"
+                    "file-info-name": "文件名: {0}",
+                    "file-info-size": "大小: {0} B",
+                    "file-info-lastmodify": "最后修改日期: {0}"
                 },
                 "common-buttons": {
                     "btn-merge": "合并",
@@ -584,17 +583,17 @@
                 "save-folder": "保存目录"
             },
             "mainview": {
-                "total-file-count": "共 $0 个项目",
-                "total-selected-count": "共 $0 个项目  选中 $1 个项目",
+                "total-file-count": "共 {0} 个项目",
+                "total-selected-count": "共 {0} 个项目  选中 {1} 个项目",
                 "search-tab": "请输入要搜索的文件名称",
                 "go-back": "后退",
                 "go-forward": "前进",
                 "go-up": "上级目录",
                 "go-refresh": "刷新",
                 "progress": {
-                    "delete": "已删除 $0 个项目，共 $1 个项目",
-                    "upload": "上传共 $0 个项目，剩余 $1 个项目",
-                    "download": "下载共 $0 个项目，剩余 $1 个项目",
+                    "delete": "已删除 {0} 个项目，共 {1} 个项目",
+                    "upload": "上传共 {0} 个项目，剩余 {1} 个项目",
+                    "download": "下载共 {0} 个项目，剩余 {1} 个项目",
                     "prepare-download": "准备下载...",
                     "prepare-upload": "准备上传...",
                     "donwload-finished": "下载完成。",
@@ -608,7 +607,7 @@
                     "group": "组",
                     "lastModify": "最后修改时间",
                     "perms": "权限",
-                    "fmt-time": "$0"
+                    "fmt-time": "{0}"
                 },
                 "file-types": {
                     "dir": "文件夹",

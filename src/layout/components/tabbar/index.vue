@@ -3,7 +3,7 @@
 		<transition-group name="drag" class="content" tag="div">
 			<div
 				v-for="(item, index) in sessionInstTabs"
-				:key="index"
+				:key="item.data.id"
 				class="tabs-item"
 				:class="{ 'item-active': activeTabIndex === index }"
 				draggable="true"
@@ -147,7 +147,7 @@ export default {
 				})
 				return
 			}
-			const noConfirm = this.noCloseConfirm
+			const noConfirm = this.$store.getters.noCloseConfirm
 			if (noConfirm && session.type !== "editor") {
 				session.beforeClose()
 				session.close()
@@ -244,7 +244,9 @@ export default {
 	overflow: hidden;
 	white-space: nowrap;
 	box-sizing: border-box;
+	padding-left: 5px;
 	background-color: var(--n-tabs-bg-color);
+	backdrop-filter: blur(5px);
 
 	&::after {
 		content: '';

@@ -1,5 +1,4 @@
 import xtermTheme from 'xterm-theme'
-import xtermPreviewComponent from '../components/xterminalPreview.vue'
 
 export const fontFamily = {
     name: 'fontFamily',
@@ -249,7 +248,7 @@ export const cursorStyle = {
     description: 'home.profile.terminal.cursorStyle.description',
     defaultValue: 'block',
     type: 'radio-group',
-    options:[
+    options: [
         {
             label: '█',
             value: 'block'
@@ -257,7 +256,7 @@ export const cursorStyle = {
         {
             label: '|',
             value: 'bar'
-        },{
+        }, {
             label: '▁',
             value: 'underline'
         },
@@ -307,7 +306,6 @@ export const termTheme = {
             }
         })
     ],
-    component: xtermPreviewComponent
 }
 export const language = {
     name: 'language',

@@ -1,7 +1,6 @@
 <template>
 	<div class="pt-xterm-session">
 		<div class="xterm-container" ref="xterm_container">
-			<!-- <pt-xterm ref="xterm" @key="onXtermKey" @resize="onXtermResize"/> -->
 			<xterm-instance
 				v-for="(sessId, idx) in sessions"
 				:key="sessId"

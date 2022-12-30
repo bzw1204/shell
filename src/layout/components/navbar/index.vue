@@ -27,6 +27,9 @@
 						<el-dropdown-item :disabled="theme === 'pink'" command="pink" icon="el-icon-grape">
 							{{ T('app.theme.pink') }}
 						</el-dropdown-item>
+						<el-dropdown-item :disabled="theme === 'test'" command="test" icon="el-icon-grape">
+							磨砂
+						</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 				<!-- 设置按钮 -->

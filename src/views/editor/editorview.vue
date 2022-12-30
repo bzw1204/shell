@@ -1,4 +1,4 @@
-<template xmlns="" xmlns="">
+<template>
 	<div class="pt-vnc-view">
 		<div class="n-editor-toolbar">
 			<div class="n-editor-toolbar__nav">

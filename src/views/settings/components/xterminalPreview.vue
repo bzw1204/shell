@@ -1,190 +1,183 @@
 <template>
-	<div class="n-xterm-preview" :style="{ 'background-color': backgroundColor }">
-		<pt-xterm ref="xterm" :options="options" />
+	<div class="n-terminal-preview" v-bind="$attrs">
+		<div class="color-dot-wrapper">
+			<span class="color-name">{{ props.themeName }}</span>
+			<div class="color-dot">
+				<span class="color-dot-item" v-for="(item,index) in colorList" :key="index" :style="{background: item}"></span>
+			</div>
+		</div>
+		<div class="theme-color" :style="themeStyle">
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">[</span>
+				<span :style="{color: currentTheme.green}">root</span>
+				<span :style="{color: currentTheme.cyan}">@</span>
+				<span :style="{color: currentTheme.blue}">nxshell </span>
+				<span :style="{color: currentTheme.blue}">~</span>
+				<span :style="{color: currentTheme.white}">]&nbsp;</span>
+				<span :style="{color: currentTheme.red}"># </span>
+				<span :style="{color: currentTheme.white}">ls -all</span>
+			</div>
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">drwxr-xr-x 3 root root 6 11月 26 2019&nbsp;</span>
+				<span :style="{color: currentTheme.yellow}">Documents</span>
+			</div>
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">drwxr-xr-x 3 root root 6 11月 26 2019&nbsp;</span>
+				<span :style="{color: currentTheme.black,background: currentTheme.green}">Downloads</span>
+			</div>
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">drwxr-xr-x 3 root root 6 11月 26 2019&nbsp;</span>
+				<span :style="{color: currentTheme.black,background: currentTheme.brightBlack}">Pictures</span>
+			</div>
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">drwxr-xr-x 3 root root 6 11月 26 2019&nbsp;</span>
+				<span :style="{color: currentTheme.brightBlue}">Music</span>
+			</div>
+			<div class="theme-color-item">
+				<span :style="{color: currentTheme.white}">[</span>
+				<span :style="{color: currentTheme.green}">root</span>
+				<span :style="{color: currentTheme.cyan}">@</span>
+				<span :style="{color: currentTheme.blue}">nxshell </span>
+				<span :style="{color: currentTheme.blue}">~</span>
+				<span :style="{color: currentTheme.white}">]&nbsp;</span>
+				<span :style="{color: currentTheme.red}"># </span>
+				<span :style="{color: currentTheme.white}" :class="{'cursor-blink':props.cursorBlink}">
+					{{ cursorStyle }}
+				</span>
+			</div>
+		</div>
 	</div>
 </template>
 
-<script>
-import xtermTheme from 'xterm-theme'
-import { settingFormReset } from '../constants/default.js'
+<script setup>
+import xtermTheme from "xterm-theme";
+import { onMounted, ref, watch, watchEffect } from "vue";
 
-const MODES = {
-	DEFAULT: 0,
-	HIGHLIGHT: 1,
-	UNDERLINE: 4,
-	BLINK: 5,
-	REVERSED: 7
+const props = defineProps({
+	themeName: '',
+	fontFamily: '',
+	fontSize: '12px',
+	fontWeight: 'normal',
+	lineHeight: '1',
+	letterSpacing: 'normal',
+	cursorStyle: 'block',
+	cursorBlink: false
+})
+const ignoreProps = ['background', 'cursor', 'cursorAccent', 'foreground', 'selection']
+const colorList = ref([])
+const currentTheme = ref({})
+const CURSOR_STYLE = { block: "█", bar: "|", underline: "▁" }
+const cursorStyle = ref("█")
+const themeStyle = ref({})
+
+function initThemePreview() {
+	currentTheme.value = xtermTheme[props.themeName ?? Object.keys(xtermTheme)[0]]
+	colorList.value = []
+	for (const key in currentTheme.value) {
+		if (!ignoreProps.includes(key)) {
+			colorList.value.push(currentTheme.value[key])
+		}
+	}
+	themeStyle.value = {
+		background: currentTheme.value.background,
+		fontFamily: props.fontFamily,
+		fontWeight: props.fontWeight,
+		fontSize: props.fontSize + 'px',
+		lineHeight: props.lineHeight,
+		letterSpacing: props.letterSpacing + 'px'
+	}
+
+	cursorStyle.value = CURSOR_STYLE[props.cursorStyle ?? 'bar']
 }
 
-const FORECOLOR = {
-	BLACK: 30,
-	RED: 31,
-	GREEN: 32,
-	YELLOW: 33,
-	BLUE: 34,
-	MAGENTA: 35,
-	CYAN: 36,
-	WHITE: 37
-}
+onMounted(() => {
+	initThemePreview()
+})
+watchEffect(() => {
+	initThemePreview()
+	console.log(props.themeName)
+})
+watch(() => props.themeName, () => {
+	console.log('mz', props.themeName)
+})
+</script>
 
-const BGCOLOR = {
-	BLACK: 40,
-	RED: 41,
-	GREEN: 42,
-	YELLOW: 43,
-	BLUE: 44,
-	MAGENTA: 45,
-	CYAN: 46,
-	WHITE: 47
-}
+<style lang="scss" scoped>
+.n-terminal-preview {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	padding: 10px;
+	min-width: 380px;
 
-export default {
-	name: 'NxTerminalPreview',
-	props: {
-		context: {
-			type: Object,
-			required: true,
-			default: () => {
-				return settingFormReset
+	.color-dot-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 0px 10px 5px;
+		width: 100%;
+		box-sizing: border-box;
+
+		.color-name {
+			flex: 1;
+			color: var(--n-text-color-base);
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.color-dot {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			column-gap: 2px;
+			row-gap: 5px;
+
+			.color-dot-item {
+				width: 10px;
+				height: 10px;
 			}
 		}
-	},
 
-	data() {
-		return {
-			settingFormReset,
-			options: {
-				mode: 'xterm'
-			},
-			backgroundColor: '#000'
-		}
-	},
+	}
 
-	watch: {
-		'context.xtermTheme'() {
-			this.setTheme(this.getTheme())
-		},
-		'context.fontWeight'() {
-			if (this.context.fontWeight) {
-				this.setOption('fontWeight', this.context.fontWeight)
-			}
-		},
-		'context.fontSize'() {
-			if (this.context.fontSize) {
-				this.setOption('fontSize', this.context.fontSize)
-			}
-		},
-		'context.lineHeight'() {
-			if (this.context.lineHeight) {
-				this.setOption('lineHeight', this.context.lineHeight)
-			}
-		},
-		'context.letterSpacing'() {
-			if (this.context.letterSpacing) {
-				this.setOption('letterSpacing', this.context.letterSpacing)
-			}
-		},
-		'context.cursorBlink'() {
-			if (this.context.cursorBlink) {
-				this.setOption('cursorBlink', this.context.cursorBlink)
-			}
-		},
-		'context.cursorStyle'() {
-			if (this.context.cursorStyle) {
-				this.setOption('cursorStyle', this.context.cursorStyle)
-			}
-		},
-		'context.fontFamily'() {
-			this.setOption('fontFamily', this.getFontFamily())
-		}
-	},
+	.theme-color {
+		display: flex;
+		flex-direction: column;
+		row-gap: 2px;
+		width: 100%;
+		height: 100%;
+		padding: 5px 5px 20px 5px;
+		box-sizing: border-box;
+		backdrop-filter: blur(5px);
+		white-space: nowrap;
+		overflow: hidden;
 
-	mounted() {
-		this.$nextTick(() => {
-			this.writePreviewData()
-			// initialize theme info
-			const configMerge = { ...this.settingFormReset, ...this.content }
-			for (const key in configMerge) {
-				if (key !== 'theme') {
-					this.setOption(key, configMerge[key])
-				}
-			}
-			this.setTheme(this.getTheme())
-		})
-	},
-
-	methods: {
-		getTheme() {
-			let theme = {}
-			if (this.context.xtermTheme && this.context.xtermTheme !== 'default') {
-				theme = xtermTheme[this.context.xtermTheme]
-				if (theme.background) this.backgroundColor = theme.background
-			}
-			return theme
-		},
-		getFontFamily() {
-			const defaultFontFamily = this.getOption('fontFamily')
-			const fontFamily = this.context.fontFamily
-			if (fontFamily && fontFamily === 'default') {
-				return defaultFontFamily
-			}
-			return fontFamily
-		},
-		writePreviewData() {
-			this.$refs.xterm?.write('NxShell Theme Preview\r\n\r\n')
-			const w = (str, mode, fc, bc, crlf = false) => {
-				const wrSeq = `\x1b[${mode};${fc}${bc ? ';' + bc : ''}m${str}\x1b[0m${crlf ? '\r\n' : ''}`
-				this.$refs.xterm?.write(wrSeq)
-			}
-			const wr = (str, keywords, mode, fc, bc, crlf = false) => {
-				const wrSeq = `${str}\x1b[${mode};${fc}${bc ? ';' + bc : ''}m${keywords}\x1b[0m${crlf ? '\r\n' : ''}`
-				this.$refs.xterm?.write(wrSeq)
-			}
-			this.$refs.xterm?.write('[root@nxshell ~]# \x1B[1;3;31mls\x1B[0m \r\n')
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('Documents ', MODES.HIGHLIGHT, FORECOLOR.YELLOW, 1, true)
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('Downloads ', MODES.REVERSED, FORECOLOR.GREEN, 1, true)
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('Pictures ', MODES.REVERSED, FORECOLOR.BLUE, 1, true)
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('Music ', MODES.HIGHLIGHT, FORECOLOR.RED, 1, true)
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('NxShell ', MODES.HIGHLIGHT, FORECOLOR.MAGENTA, 1, true)
-			w('-rwxr-xr-x 1 root ', MODES.HIGHLIGHT, FORECOLOR.WHITE, 2)
-			w('sym -> link ', MODES.HIGHLIGHT, FORECOLOR.MAGENTA, 1, true)
-			this.$refs.xterm?.write('[root@nxshell ~]# \x1B[1;3;31m\x1B[0m ')
-		},
-
-		setTheme(theme = {}) {
-			this.$refs.xterm?.setTheme(theme)
-			this.fit()
-		},
-
-		setOption(name, value) {
-			this.$refs.xterm?.setOption(name, value)
-			this.fit()
-		},
-
-		getOption(name) {
-			return this.$refs.xterm?.getOption(name)
-		},
-
-		fit() {
-			this.$refs.xterm?.fit()
+		&-item {
+			width: 100%;
+			height: 100%;
 		}
 	}
 }
-</script>
 
-<style lang="scss">
-.n-xterm-preview {
-	position: relative;
-	height: 220px;
-	padding: 5px;
-	width: 90%;
-	min-width: 400px;
-	max-width: 500px;
-	box-sizing: border-box;
+@keyframes blinkFrame {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 0.25;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.cursor-blink {
+	animation: blinkFrame 1s linear 1000ms infinite;
 }
 </style>

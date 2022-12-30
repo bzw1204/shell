@@ -33,7 +33,7 @@ export default new Vuex.Store({
         currentSelectedSessionNode: null,
         activeTabIndex: 0,
         sessionInstTabs: [],
-        noCloseConfirm: false,
+        noCloseConfirm: globalSetting.getProfile("xterm")?.noCloseConfirm,
         editorChange: false
     },
     mutations: {

@@ -132,6 +132,7 @@ $nx-content-tabs: 40px;
 
 		.nx-content {
 			height: calc(100vh - #{$nx-content-tabs});
+			backdrop-filter: blur(20px);
 		}
 	}
 }

@@ -1,0 +1,68 @@
+[nx-theme="test"]:root {
+  --n-disabled-color: #B8B8B836;
+
+  --n-bg-color-base: transparent;
+  --n-bg-color-light: transparent;
+  --n-text-color: #FFFFFF;
+  --n-text-color-base: #FFFFFF;
+  --n-text-color-light: rgb(209, 209, 209);
+  --n-text-color-active: rgb(22 93 255);
+  --n-hover-bg-color: #FFFFFF36;
+
+  --n-button-primary-text: #ffffff;
+  --n-button-primary: rgb(22 93 255);
+  --n-button-primary-hover: #4080ff;
+  --n-button-default-text: #000;
+  --n-button-default: #F2F3F5;
+  --n-button-default-hover: #E5E6EB36;
+  --n-button-danger: #FF1744;
+  --n-button-danger-hover: #EF5350;
+  --n-button-warning: #FF3D00;
+  --n-button-warning-hover: #FF7043;
+
+  --n-input-bg-color: #f2f3f536;
+  --n-border-color: #f2f3f536;
+
+  --n-color-bg-dialog: #ffffff36;
+  --n-color-modal: #ffffff36;
+  --n-progress-bar-color: #90CAF9;
+
+  /* Tabs */
+  --n-tabs-bg-color: #FFFFFF36;
+  --n-tabs-item-bg-color: #FFFFFF36;
+  --n-tabs-item-active: #165dff;
+  --n-tabs-item-active-color: #FFFfff;
+  --n-tabs-item-hover-bg-color: #165dff;
+
+
+  --n-select-bg-color: #ffffff36;
+  --n-select-hover-bg-color: #f2f3f536;
+
+  --n-switch-active: rgb(22 93 255);
+  --n-jump-box-shadow: rgb(0 0 0 / 20%);
+
+  --n-theme-selected: #00000036;
+  #app {
+    background-image: url("C://Users//MuYu//Pictures//壁纸//1.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  .v-modal {
+    opacity: 1;
+    background: #00000036;
+    backdrop-filter: blur(15px);
+  }
+
+  .el-select-dropdown {
+    backdrop-filter: blur(10px);
+
+    .popper__arrow {
+      display: none;
+    }
+  }
+
+  .pt-menu {
+    backdrop-filter: blur(10px);
+  }
+}

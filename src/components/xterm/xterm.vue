@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-xterm" :style="{'background-color': backgroundColor}" @dragover.prevent @drop="handleFileDrop" >
+	<div class="pt-xterm" :style="{'background-color': backgroundColor}" @dragover.prevent @drop="handleFileDrop">
 		<div class="xterm-search" v-if="searchShow">
 			<div class="search-input">
 				<el-input
@@ -61,6 +61,8 @@ import { WebLinksAddon } from 'xterm-addon-web-links'
 import { FitAddon } from 'xterm-addon-fit'
 import { WebglAddon } from 'xterm-addon-webgl'
 import { SearchAddon } from 'xterm-addon-search'
+import { Unicode11Addon } from 'xterm-addon-unicode11'
+import { CanvasAddon } from 'xterm-addon-canvas'
 
 export default {
 	name: 'PtXterm',
@@ -115,22 +117,21 @@ export default {
 		this.$nextTick(() => {
 			this.$ptElementResizeDetector.listenTo(this.$el, this.nativeResizeHandler)
 			//this.resizeObserve.observe(this.$el);
-			const options = { wordSeparator: ' /:?,;.', ...this.options }
+			const options = { wordSeparator: ' /:?,;.', ...this.options, allowTransparency: true }
 			// 优化xterm终端边距
 			if (options.hasOwnProperty('theme') && options.theme) {
-				const { background = '#000' } = options.theme
-				this.backgroundColor = background
+				// const { background = '#000' } = options.theme
+				options.theme.background = 'transparent'
+				this.backgroundColor = '#00000036'
 			}
-
 			this.terminal = new Terminal(options)
-			this.terminal.loadAddon(
-				new WebLinksAddon(
-					(event, uri) => {
+			this.terminal.loadAddon(new WebLinksAddon((event, uri) => {
 						if (!event.ctrlKey) {
 							return
 						}
 						this.$emit('link', uri)
 					},
+
 					{
 						tooltipCallback: (evt, uri, location) => {
 							const { actualCellWidth, actualCellHeight } = this.terminal._core._renderService.dimensions
@@ -154,23 +155,27 @@ export default {
 					}
 				)
 			)
-			const fitAddon = new FitAddon()
-			this.terminal.loadAddon(fitAddon)
+			this.fitAddon = new FitAddon()
+			this.terminal.loadAddon(this.fitAddon)
 
-			this.terminal.open(this.$refs.xtermContainer)
-			fitAddon.fit()
-			this.fitAddon = fitAddon
-
-			const webgl = new WebglAddon()
-			try {
-				webgl.onContextLoss((e) => webgl.dispose())
-				this.terminal.loadAddon(webgl)
-			} catch (e) {
-				console.log('WebGL init fail, it will fallback to canvas', e)
-			}
+			// 加载unicode11插件
+			const unicode11Addon = new Unicode11Addon();
+			this.terminal.loadAddon(unicode11Addon);
+			// activate the new version
+			this.terminal.unicode.activeVersion = '11';
+			this.terminal.loadAddon(new CanvasAddon())
 
 			this.searchAddon = new SearchAddon()
 			this.terminal.loadAddon(this.searchAddon)
+			this.terminal.open(this.$refs.xtermContainer)
+			this.fitAddon.fit()
+			// const webgl = new WebglAddon()
+			// try {
+			// 	webgl.onContextLoss((e) => webgl.dispose())
+			// 	this.terminal.loadAddon(webgl)
+			// } catch (e) {
+			// 	console.log('WebGL init fail, it will fallback to canvas', e)
+			// }
 
 			this.terminal.onKey((e) => {
 				this.$emit('key', e)
@@ -273,7 +278,7 @@ export default {
 				return
 			}
 			this.fitAddon.fit()
-			this.terminal.refresh(0,0);
+			// this.terminal.refresh(0, 0);
 		},
 
 		onFocus() {

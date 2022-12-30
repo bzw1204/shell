@@ -423,7 +423,7 @@ export default {
 	position: relative;
 	height: 100%;
 	background-color: var(--n-bg-color-base);
-
+	backdrop-filter: blur(5px);
 	.el-empty {
 		position: absolute;
 		top: 50%;

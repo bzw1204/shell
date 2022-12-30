@@ -1,12 +1,13 @@
 <template>
-	<div class="xterm-instance" :style="{'background-color': backgroundColor}" @mousedown.middle="handleSelectPaste">
+	<div class="xterm-instance" :style="{ 'background-color': backgroundColor }" @mousedown.middle="handleSelectPaste">
 		<div class="session-toolbar">
 			<span class="host-url">{{ currentSessionInfo.url }}</span>
 			<el-tooltip
 				class="item"
 				effect="dark"
 				:content="T('home.session-instance.duplicate-session')"
-				placement="top-start">
+				placement="top-start"
+			>
 				<span class="btn" @click="copySession">
 					<i class="el-icon-copy-document" />
 				</span>
@@ -15,7 +16,8 @@
 				class="item"
 				effect="dark"
 				:content="T('home.session-instance.reconnect')"
-				placement="top-start">
+				placement="top-start"
+			>
 				<span class="btn" @click="reconSession">
 					<i class="el-icon-refresh" />
 				</span>
@@ -46,7 +48,8 @@
 			@titleChange="onTitleChange"
 			@shortcut="handleShortCutEvent"
 			v-context-menu="xtermMenu"
-			:options="options" />
+			:options="options"
+		/>
 		<pt-auth-dialog ref="dialog" @authOk="handleAuthOk" />
 	</div>
 </template>
@@ -258,7 +261,7 @@ export default {
 	methods: {
 		...mapMutations(['setKeyboardToAll']),
 		xtermFocus() {
-			EventBus.publish("updateTabBySessionId", this.sessionInstanceId)
+			EventBus.publish('updateTabBySessionId', this.sessionInstanceId)
 		},
 		genrateUrlBySessionCfg(config) {
 			let url = ''
@@ -268,9 +271,9 @@ export default {
 				// 为了更方便的处理，这里先用http代替protocol ssh
 				let sessionURL = {}
 				try {
-					sessionURL = new URL(`http://${ hostAddress || 'localhost' }`)
+					sessionURL = new URL(`http://${hostAddress || 'localhost'}`)
 				} catch (e) {
-					sessionURL.href = `ssh://${ username }:****@${ hostAddress }:${ hostPort }`
+					sessionURL.href = `ssh://${username}:****@${hostAddress}:${hostPort}`
 				}
 
 				sessionURL.port = hostPort || 22
@@ -284,13 +287,13 @@ export default {
 				url = sessionURL.href.replace('http', 'ssh')
 			} else if (config.protocal === 'telnet') {
 				const { hostAddress, hostTelnetPort, username, password } = config
-				url = `telnet://${ hostAddress }:${ hostTelnetPort }`
+				url = `telnet://${hostAddress}:${hostTelnetPort}`
 			} else if (config.protocal === 'localshell') {
 				url = 'LocalShell Tool'
 			} else {
 				// serial protocol
 				const { port } = config
-				url = `serial@${ port }`
+				url = `serial@${port}`
 			}
 			return url
 		},
@@ -349,9 +352,17 @@ export default {
 				...globalXtermProfile,
 				...sessionCfg.config,
 				fontWeight: this.getFontWeight(sessionCfg.config.fontWeight),
-				theme: this.getTheme(sessionCfg.config.xtermTheme || 'default'),
-				fontFamily: this.getFontFamily(sessionCfg.config.fontFamily || 'default')
+				theme: this.getTheme(sessionCfg.config.xtermTheme || 'AlienBlood'),
+				fontFamily: this.getFontFamily(sessionCfg.config.fontFamily || 'default'),
+				allowTransparency: true,
+				allowProposedApi: true,
+				overviewRulerWidth: 8,
+				windowsMode: process.platform === 'win32',
 			}
+			this.options.theme.selection = '#FFFFFF36'
+			this.options.theme.foreground = '#FFF'
+			this.options.theme.background = 'transparent'
+			// this.options.theme.background = `#00000036`
 			// 优化会话窗口背景样式
 			if (xtermTheme[this.options?.xtermTheme]) {
 				this.backgroundColor = xtermTheme[this.options?.xtermTheme].background
@@ -452,15 +463,15 @@ export default {
 			})
 
 			let newConfig = null
-			if (data.type == "password") {
+			if (data.type == 'password') {
 				newConfig = {
-					authType: "password",
+					authType: 'password',
 					username: data.username,
 					password: data.password
 				}
-			} else if (data.type == "publickey") {
+			} else if (data.type == 'publickey') {
 				newConfig = {
-					authType: "cert",
+					authType: 'cert',
 					username: data.username,
 					passphrase: data.passphrase,
 					cert: data.publickey
@@ -483,7 +494,7 @@ export default {
 			let sessionCfg = this.$sessionManager.getSessionConfigByInstanceId(this.sessionInstanceId)
 			if (sessionCfg) {
 				let oldConfig = merge(sessionCfg.config, newConfig)
-				sessionCfg.update(oldConfig.hostName, oldConfig, "")
+				sessionCfg.update(oldConfig.hostName, oldConfig, '')
 			}
 		},
 		loadXzmode() {

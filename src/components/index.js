@@ -17,10 +17,7 @@ import PtGridViewItem from "./gridview/gridviewItem.vue";
 import PtList from "./list/list.vue";
 import PtMenu from "./menu/menu.vue";
 import PtMenuItem from "./menu/menuitem.vue";
-import PtTab from "./tab/tab.vue";
-import PtTabItem from "./tab/tabitem.vue";
 import PtToolbar from "./bars/toolbar.vue";
-import Pti18n from "./i18n/mixins";
 import PtXterm from "./xterm/xterm";
 import PtMenuManager from "./menu/menuManager";
 import PtContextMenu from "./menu/contextmenu";
@@ -36,8 +33,6 @@ const components = [
     PtList,
     PtMenu,
     PtMenuItem,
-    PtTab,
-    PtTabItem,
     PtToolbar,
     PtXterm
 ];
@@ -49,7 +44,6 @@ export default {
         Vue.use(PtMenuManager);
         Vue.use(PtContextMenu);
         Vue.use(MouseDrag);
-        Vue.mixin(Pti18n);
         components.forEach((component) => {
             Vue.component(component.name, component);
         });
