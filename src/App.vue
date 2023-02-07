@@ -30,7 +30,7 @@ const router = useRouter()
 
 
 onMounted(() => {
-	window.document.documentElement.setAttribute('nx-theme', theme.value)
+	appStore.changeTheme(theme.value)
 	if (process.env.NODE_ENV !== 'development') {
 		router.push({
 			name: 'Home'

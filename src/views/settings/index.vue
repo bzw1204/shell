@@ -6,22 +6,22 @@
 		<div class="n-setting-content">
 			<el-scrollbar>
 				<el-row :gutter="40">
-<!--					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="n-terminal-preview">-->
-<!--&lt;!&ndash;						<nx-terminal-preview :theme-name="settingsForm.xtermTheme" />&ndash;&gt;-->
-<!--					</el-col>-->
+					<!--					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="n-terminal-preview">-->
+					<!--&lt;!&ndash;						<nx-terminal-preview :theme-name="settingsForm.xtermTheme" />&ndash;&gt;-->
+					<!--					</el-col>-->
 					<el-col :xs="24" :sm="48" :md="24" :lg="12" :xl="12">
 						<el-row :gutter="40" style="margin-bottom: 20px">
 							<el-col :span="8" class="n-setting-content__label">{{ $t(termTheme.title) }}</el-col>
 							<el-col :span="40">
-<!--								<el-select v-model="settingsForm[termTheme.name]" @change="handlerSettingChange">-->
-<!--									<el-option-->
-<!--										v-for="(item, index) in termTheme.options"-->
-<!--										:label="$t(item.label)"-->
-<!--										:value="item.value"-->
-<!--										:key="index"-->
-<!--									/>-->
-<!--								</el-select>-->
-								<theme-list style="height: 200px;" @change="handlerSettingChange"/>
+								<!--								<el-select v-model="settingsForm[termTheme.name]" @change="handlerSettingChange">-->
+								<!--									<el-option-->
+								<!--										v-for="(item, index) in termTheme.options"-->
+								<!--										:label="$t(item.label)"-->
+								<!--										:value="item.value"-->
+								<!--										:key="index"-->
+								<!--									/>-->
+								<!--								</el-select>-->
+								<theme-list style="height: 240px;" @change="handlerSettingChange" />
 							</el-col>
 						</el-row>
 						<el-row :gutter="40" style="margin-bottom: 20px">
@@ -152,8 +152,9 @@
 					<el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
 						<el-row :gutter="40" style="margin-bottom: 20px">
 							<el-col :span="8" class="n-setting-content__label">{{
-								T('home.profile.system.nxconfig.title')
-							}}</el-col>
+									T('home.profile.system.nxconfig.title')
+								}}
+							</el-col>
 							<el-col :span="16">
 								<pt-folder v-model="settingsForm['nxconfig']" @change="handlerSettingChange" />
 							</el-col>
@@ -215,6 +216,11 @@ export default {
 	},
 	created() {
 		this.initDefaultSettings()
+	},
+	watch: {
+		'settingsForm.language': function (n, o) {
+			this.$i18n.locale = n
+		}
 	},
 	methods: {
 		initDefaultSettings() {

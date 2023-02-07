@@ -15,7 +15,7 @@ const useAppStore = defineStore('app', {
         theme: globalSetting.getProfile('xterm')?.theme as string ?? 'light',
         userLock: false,
         noCloseConfirm: false,
-        language: globalSetting.getProfile('xterm')?.language as string ?? 'zh',
+        language: globalSetting.getProfile('xterm')?.language as string ?? 'zh-CN',
         configPanel: true
     }),
     getters: {
@@ -26,6 +26,7 @@ const useAppStore = defineStore('app', {
             const defaultSettings = globalSetting.getProfile("xterm")
             await globalSetting.updateProfile("xterm", { ...defaultSettings, theme: theme }).then(() => {
                 this.theme = theme;
+                window.document.documentElement.setAttribute('nx-theme', theme)
             })
         },
         changeLanguage(language: string) {
