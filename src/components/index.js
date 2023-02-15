@@ -23,7 +23,6 @@ import PtMenuManager from "./menu/menuManager";
 import PtContextMenu from "./menu/contextmenu";
 import NSpace from './space/index.vue'
 
-
 const components = [
     PtFile,
     PtFolder,

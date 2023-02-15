@@ -29,14 +29,17 @@
 	</div>
 </template>
 
-<script lang="ts" setup name="PtMenuItem">
+<script lang="ts">
+export default {
+	name: 'PtMenuItem'
+}
+</script>
+
+<script lang="ts" setup>
 import { popMenu, pushMenu } from './menuManager'
 import { useI18n } from 'vue-i18n-bridge'
-import { computed, getCurrentInstance, ref, defineComponent } from "vue";
+import { computed, getCurrentInstance, ref } from "vue";
 
-defineComponent({
-	name: 'defineComponent '
-})
 const { t } = useI18n()
 const submenu = ref()
 const props = withDefaults(defineProps<
@@ -61,7 +64,6 @@ const accelerator = computed(() => {
 	if (!props.item.accelerator) {
 		return ''
 	}
-
 	return props.item.accelerator
 		.split('+')
 		.map((key: string) => {
@@ -85,6 +87,7 @@ const handleClick = () => {
 	}
 }
 </script>
+
 <style lang="scss" scoped>
 @import '@/assets/scss/_const.scss';
 
