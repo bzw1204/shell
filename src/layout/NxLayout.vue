@@ -10,22 +10,22 @@
 				<!-- 右侧开关 -->
 				<div class="window-controls-container" v-if="!IS_MAC_OS">
 					<div v-if="showLayout" class="n-layout-wrapper">
-						<el-tooltip class="item" effect="dark" :content="T('home.session-instance.context-menu.split-normal')" placement="top-start">
+						<el-tooltip class="item" effect="dark" :content="t('home.session-instance.context-menu.split-normal')" placement="top-start">
 							<span class="n-layout-button" :class="{'is-active':currentLayout === 'normal'}" data-layout="normal" @click="changeLayout">
 								<n-icon name="layout-alone" size="16" />
 							</span>
 						</el-tooltip>
-						<el-tooltip class="item" effect="dark" :content="T('home.session-instance.context-menu.split-row')" placement="top-start">
+						<el-tooltip class="item" effect="dark" :content="t('home.session-instance.context-menu.split-row')" placement="top-start">
 							<span class="n-layout-button" :class="{'is-active':currentLayout === 'row'}" data-layout="row" @click="changeLayout">
 								<n-icon name="layout-row" size="16" />
 							</span>
 						</el-tooltip>
-						<el-tooltip class="item" effect="dark" :content="T('home.session-instance.context-menu.split-column')" placement="top-start">
+						<el-tooltip class="item" effect="dark" :content="t('home.session-instance.context-menu.split-column')" placement="top-start">
 							<span class="n-layout-button" :class="{'is-active':currentLayout === 'col'}" data-layout="col" @click="changeLayout">
 								<n-icon name="layout-col" size="16" />
 							</span>
 						</el-tooltip>
-						<el-tooltip class="item" effect="dark" :content="T('home.session-instance.context-menu.split-grid')" placement="top-start">
+						<el-tooltip class="item" effect="dark" :content="t('home.session-instance.context-menu.split-grid')" placement="top-start">
 							<span class="n-layout-button" :class="{'is-active':currentLayout === 'grid'}" data-layout="grid" @click="changeLayout">
 								<n-icon name="layout-lattice" size="16" />
 							</span>
@@ -51,123 +51,126 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { NxNavbar, NxToolbar } from "@/layout/components";
 import * as EventBus from '@/services/eventbus'
+import { computed, getCurrentInstance, onMounted, ref } from "vue";
+import NSpace from "@/components/space/index.vue";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store/pinia";
+import { useI18n } from "vue-i18n-bridge";
 
+const { t } = useI18n()
 const IS_MAC_OS = /macintosh/i.test(navigator.userAgent)
-export default {
-	name: 'NxLayout',
-	components: { NxToolbar, NxNavbar },
-	props: {
-		isMainWindow: {
-			type: Boolean,
-			default: false
-		},
-		leftPanelWidth: {
-			type: Number,
-			default: IS_MAC_OS ? 60 : 50
-		},
-		leftPanel: {
-			type: Boolean,
-			default: false
-		},
-		topPanel: {
-			type: Boolean,
-			default: true
-		},
-		title: {
-			type: String,
-			default: ''
-		}
-	},
 
-	data() {
-		return {
-			IS_MAC_OS,
-			state: 'normal',
-			active: true,
-			window: null,
-			showLayout: false,
-			currentLayout: 'normal'
-		}
-	},
-	computed: {
-		main_container_fix_style() {
-			return this.topPanel ? {} : { height: '100%' }
-		}
-	},
-	created() {
-		this.setWindowHandlers()
-		EventBus.subscript('instance-created', () => {
-			const sessions = this.$sessionManager.getSessionIntances()
-			this.showLayout = sessions.some(x => x.type === 'shell')
-		})
-		EventBus.subscript('instance-close', () => {
-			const sessions = this.$sessionManager.getSessionIntances()
-			this.showLayout = sessions.some(x => x.type === 'shell')
-		})
-	},
+const isMainWindow = ref(true)
+const leftPanelWidth = ref(IS_MAC_OS ? 60 : 50)
+const leftPanel = ref(true)
+const topPanel = ref(true)
+const state = ref('normal')
+const active = ref(true)
+const window = ref()
+const showLayout = ref(false)
+const currentLayout = ref('normal')
 
-	methods: {
+const main_container_fix_style = computed(() => topPanel ? {} : { height: '100%' })
 
-		setWindowHandlers() {
-			const currentWindow = powertools.getCurrentWindow()
-			this.window = currentWindow
+function setWindowHandlers() {
+	// @ts-ignore
+	const currentWindow = powertools.getCurrentWindow()
+	window.value = currentWindow
 
-			currentWindow.on('blur', () => {
-				this.active = false
-			})
+	currentWindow.on('blur', () => {
+		active.value = false
+	})
 
-			currentWindow.on('focus', () => {
-				this.active = true
-			})
+	currentWindow.on('focus', () => {
+		active.value = true
+	})
 
-			currentWindow.on('maximize', () => {
-				this.state = 'maximize'
-			})
+	currentWindow.on('maximize', () => {
+		state.value = 'maximize'
+	})
 
-			currentWindow.on('unmaximize', () => {
-				this.state = 'normal'
-			})
-		},
+	currentWindow.on('unmaximize', () => {
+		state.value = 'normal'
+	})
+}
 
-		workaroundLinuxMaxMinEvent(status) {
-			// electron version < 17.xx ,it not emit maximize/unmaximize events
-			const ostype = powertools.getostype()
-			if (ostype === 'Linux') {
-				this.state = status
-			}
-		},
-
-		doMinimize() {
-			this.window.minimize()
-			this.workaroundLinuxMaxMinEvent('normal')
-		},
-
-		doMaximize() {
-			if (this.state === 'normal') {
-				this.window.maximize()
-				this.workaroundLinuxMaxMinEvent('maximize')
-			} else {
-				this.window.unmaximize()
-				this.workaroundLinuxMaxMinEvent('normal')
-			}
-		},
-
-		doClose() {
-			this.window.close()
-		},
-		changeLayout(event) {
-			const element = event.currentTarget
-			const layout = element.getAttribute('data-layout')
-			if (this.currentLayout !== layout) {
-				this.currentLayout = layout
-				EventBus.publish('change-layout', layout)
-			}
-		}
+function workaroundLinuxMaxMinEvent(status: string) {
+	// @ts-ignore
+	// electron version < 17.xx ,it not emit maximize/unmaximize events
+	const os = powertools.getostype()
+	if (os === 'Linux') {
+		state.value = status
 	}
 }
+
+function doMinimize() {
+	// @ts-ignore
+	window.value.minimize()
+	workaroundLinuxMaxMinEvent('normal')
+}
+
+function doMaximize() {
+	if (state.value === 'normal') {
+		// @ts-ignore
+		window.value.maximize()
+		workaroundLinuxMaxMinEvent('maximize')
+	} else {
+		// @ts-ignore
+		window.value.unmaximize()
+		workaroundLinuxMaxMinEvent('normal')
+	}
+}
+
+function doClose() {
+	window.value.close()
+}
+
+function changeLayout(event: MouseEvent) {
+	const element = event.currentTarget as HTMLElement
+	const layout = element.getAttribute('data-layout') as string
+	if (currentLayout.value !== layout) {
+		currentLayout.value = layout
+		EventBus.publish('change-layout', layout)
+	}
+}
+
+const proxy = getCurrentInstance()?.proxy
+const { configPanel } = storeToRefs(useAppStore())
+onMounted(() => {
+	setWindowHandlers()
+	// @ts-ignore
+	const sessions = proxy && proxy.$sessionManager.getSessionIntances()
+
+	EventBus.subscript('instance-created', () => {
+		showLayout.value = sessions.some((x: any) => x.type === 'shell')
+	})
+	EventBus.subscript('instance-close', () => {
+		showLayout.value = sessions.some((x: any) => x.type === 'shell')
+	})
+	EventBus.subscript('enter-fullscreen', async () => {
+		try {
+			leftPanel.value = false
+			topPanel.value = false
+			EventBus.publish('session-config-panel', 'close')
+			await document.body.requestFullscreen()
+		} catch (e) {
+			// pass
+		}
+	})
+	document.addEventListener('fullscreenchange', () => {
+		const isFullscreen = !!document.fullscreenElement
+		if (!isFullscreen) {
+			if (configPanel.value) {
+				EventBus.publish('session-config-panel', 'open')
+			}
+			leftPanel.value = true
+			topPanel.value = true
+		}
+	})
+})
 </script>
 
 <style lang="scss">

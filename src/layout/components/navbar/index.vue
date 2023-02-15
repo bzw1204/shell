@@ -19,13 +19,13 @@
 					<el-button type="text" :icon="themeIconConstants[theme]" />
 					<el-dropdown-menu class="theme-btn" slot="dropdown">
 						<el-dropdown-item :disabled="theme === 'light'" command="light" icon="el-icon-sunny">
-							{{ T('app.theme.light') }}
+							{{ t('app.theme.light') }}
 						</el-dropdown-item>
 						<el-dropdown-item :disabled="theme === 'dark'" command="dark" icon="el-icon-moon">
-							{{ T('app.theme.dark') }}
+							{{ t('app.theme.dark') }}
 						</el-dropdown-item>
 						<el-dropdown-item :disabled="theme === 'pink'" command="pink" icon="el-icon-grape">
-							{{ T('app.theme.pink') }}
+							{{ t('app.theme.pink') }}
 						</el-dropdown-item>
 						<el-dropdown-item :disabled="theme === 'hazy'" command="hazy" icon="el-icon-grape">
 							磨砂
@@ -35,7 +35,7 @@
 				<!-- 设置按钮 -->
 				<el-button type="text" icon="el-icon-setting" @click="gotoGlobalSetting" />
 				<!-- 版本信息 -->
-				<el-tooltip v-if="needUpdate" effect="dark" :content="T('app.need-update')" placement="bottom">
+				<el-tooltip v-if="needUpdate" effect="dark" :content="t('app.need-update')" placement="bottom">
 					<el-button
 						type="text"
 						:class="{ 'version-btn': needUpdate }"
@@ -43,7 +43,7 @@
 						@click="handlerVersionUpdate"
 					/>
 				</el-tooltip>
-				<el-tooltip v-else effect="dark" :content="`${T('app.current-version')} ${version}`">
+				<el-tooltip v-else effect="dark" :content="`${t('app.current-version')} ${version}`">
 					<el-button type="text" icon="el-icon-warning-outline" />
 				</el-tooltip>
 			</n-space>
@@ -59,7 +59,9 @@ import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import semver from 'semver'
 import { getCurrentInstance, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n-bridge'
 
+const {t} = useI18n()
 const IS_MACOS = /macintosh/i.test(navigator.userAgent)
 const version = ref('V1.0.0')
 const needUpdate = ref(false)
@@ -154,7 +156,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .theme-btn {
 	padding: 5px;
-	border-color: var(--n-bg-color-light);
+	border-color: var(--n-border-color);
 	background-color: var(--n-bg-color-light);
 
 	::v-deep .el-dropdown-menu__item:not(.is-disabled) {

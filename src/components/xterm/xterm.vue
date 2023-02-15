@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-xterm" :style="{'background-color': backgroundColor}" @dragover.prevent @drop="handleFileDrop">
+	<div class="pt-xterm" :style="{ 'background-color': backgroundColor }" @dragover.prevent @drop="handleFileDrop">
 		<div class="xterm-search" v-if="searchShow">
 			<div class="search-input">
 				<el-input
@@ -16,24 +16,26 @@
 						class="item"
 						effect="dark"
 						:content="T('components.pt-xterm.search-up')"
-						placement="top-start">
+						placement="top-start"
+					>
 						<n-icon name="direction-up" @click="searchUp" />
 					</el-tooltip>
 					<el-tooltip
 						class="item"
 						effect="dark"
 						:content="T('components.pt-xterm.search-down')"
-						placement="top-start">
+						placement="top-start"
+					>
 						<n-icon name="direction-down" @click="searchDown" />
 					</el-tooltip>
 					<el-tooltip
 						class="item"
 						effect="dark"
 						:content="T('components.pt-xterm.search-close')"
-						placement="top-start">
+						placement="top-start"
+					>
 						<n-icon name="close" @click="searchClose" />
 					</el-tooltip>
-
 				</n-space>
 			</div>
 		</div>
@@ -45,7 +47,7 @@
 		<div
 			v-if="urlTip"
 			class="xterm-link-tip"
-			:style="{left: urlTipPosition.left + 'px', top: urlTipPosition.top + 'px'}"
+			:style="{ left: urlTipPosition.left + 'px', top: urlTipPosition.top + 'px' }"
 		>
 			{{ T('components.pt-xterm.open-url') }}
 		</div>
@@ -117,15 +119,17 @@ export default {
 		this.$nextTick(() => {
 			this.$ptElementResizeDetector.listenTo(this.$el, this.nativeResizeHandler)
 			//this.resizeObserve.observe(this.$el);
-			const options = { wordSeparator: ' /:?,;.', ...this.options, allowTransparency: true }
+			const options = { wordSeparator: ' /:?,;.', ...this.options, allowTransparency: false }
 			// 优化xterm终端边距
 			if (options.hasOwnProperty('theme') && options.theme) {
-				// const { background = '#000' } = options.theme
-				options.theme.background = 'transparent'
-				this.backgroundColor = '#00000036'
+				const { background = '#000' } = options.theme
+				this.backgroundColor = this.hex2Rgb(background, 0.3)
+				options.theme.background = '#00000000'
 			}
 			this.terminal = new Terminal(options)
-			this.terminal.loadAddon(new WebLinksAddon((event, uri) => {
+			this.terminal.loadAddon(
+				new WebLinksAddon(
+					(event, uri) => {
 						if (!event.ctrlKey) {
 							return
 						}
@@ -159,16 +163,16 @@ export default {
 			this.terminal.loadAddon(this.fitAddon)
 
 			// 加载unicode11插件
-			const unicode11Addon = new Unicode11Addon();
-			this.terminal.loadAddon(unicode11Addon);
+			const unicode11Addon = new Unicode11Addon()
+			this.terminal.loadAddon(unicode11Addon)
 			// activate the new version
-			this.terminal.unicode.activeVersion = '11';
-			this.terminal.loadAddon(new CanvasAddon())
+			this.terminal.unicode.activeVersion = '11'
 
 			this.searchAddon = new SearchAddon()
 			this.terminal.loadAddon(this.searchAddon)
 			this.terminal.open(this.$refs.xtermContainer)
 			this.fitAddon.fit()
+			// this.terminal.loadAddon(new CanvasAddon())
 			// const webgl = new WebglAddon()
 			// try {
 			// 	webgl.onContextLoss((e) => webgl.dispose())
@@ -207,9 +211,9 @@ export default {
 					}
 					if (['1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key)) {
 						// trigger to global process
-						mousetrap.trigger(`alt+${ key }`)
+						mousetrap.trigger(`alt+${key}`)
 					} else {
-						this.$emit('shortcut', `alt+${ key }`)
+						this.$emit('shortcut', `alt+${key}`)
 					}
 					return false
 				} else {
@@ -224,8 +228,22 @@ export default {
 	},
 
 	methods: {
+		hex2Rgb(hexColor, opc = 1) {
+			const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+			const hex = hexColor.replace(rgx, function (m, r, g, b) {
+				return r + r + g + g + b + b
+			})
+			const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+			if (!rgb) {
+				return hexColor
+			}
+			const r = parseInt(rgb[1], 16)
+			const g = parseInt(rgb[2], 16)
+			const b = parseInt(rgb[3], 16)
+			return `rgba(${r},${g},${b},${opc * 100}%)`
+		},
 		onXtermFocus() {
-			this.$emit("xterm-focus")
+			this.$emit('xterm-focus')
 		},
 		write(text) {
 			if (!this.terminal) {
@@ -278,7 +296,7 @@ export default {
 				return
 			}
 			this.fitAddon.fit()
-			// this.terminal.refresh(0, 0);
+			this.terminal.refresh(0,0);
 		},
 
 		onFocus() {
@@ -485,7 +503,7 @@ export default {
 			flex-shrink: 0;
 			justify-content: flex-end;
 			align-items: center;
-			color: #FFFFFF;
+			color: #ffffff;
 			padding-left: 10px;
 		}
 	}

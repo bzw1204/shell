@@ -316,7 +316,7 @@ export default {
 			const sessionInstance = this.$sessionManager.getSessionInstanceById(this.sessionInstanceId)
 			const port = await sessionInstance.openTunnel()
 			if (port) {
-				this.updateTunnelTitle(this.sessionInstanceId, this.T('home.session-instance.tunnel-success', port))
+				this.updateTunnelTitle(this.sessionInstanceId, this.$t('home.session-instance.tunnel-success', [port]))
 			} else {
 				this.updateTunnelTitle(this.sessionInstanceId, this.T('home.session-instance.tunnel'))
 			}
@@ -361,11 +361,11 @@ export default {
 			}
 			this.options.theme.selection = '#FFFFFF36'
 			this.options.theme.foreground = '#FFF'
-			this.options.theme.background = 'transparent'
-			// this.options.theme.background = `#00000036`
+			this.options.theme.background = '#00000036'
 			// 优化会话窗口背景样式
 			if (xtermTheme[this.options?.xtermTheme]) {
-				this.backgroundColor = xtermTheme[this.options?.xtermTheme].background
+				this.backgroundColor = this.options.theme.background
+				// this.backgroundColor = xtermTheme[this.options?.xtermTheme].background
 			}
 
 			// charset covert

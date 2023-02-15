@@ -1,4 +1,4 @@
-const { FStats } =require("./fstat");
+const { FStats } = require("./fstat");
 
 class Dirent extends FStats {
     name = ""

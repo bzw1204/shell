@@ -5,6 +5,15 @@
 		@contextmenu.stop="handleSessionTreeContainerClick"
 		@click="handleSessionTreeContainerClick"
 	>
+		<div v-if="showBatchDeletion" class="batch-deletion">
+			<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
+				全选
+			</el-checkbox>
+			<space>
+				<el-button type="primary" size="mini">批量删除</el-button>
+				<el-button type="primary" size="mini" @click="showBatchDeletion = false">关闭</el-button>
+			</space>
+		</div>
 		<!-- 提示创建会话配置 -->
 		<el-scrollbar style="height: calc(100% - 32px)">
 			<el-tree
@@ -12,6 +21,7 @@
 				node-key="id"
 				icon-class="empty"
 				draggable
+				:show-checkbox="showBatchDeletion"
 				:highlight-current="highlightCurrent"
 				:data="sessionConfigsTree"
 				:default-expanded-keys="expandedKeys"
@@ -54,6 +64,7 @@
 		</el-scrollbar>
 		<!--编辑文件夹-->
 		<nx-folder-dialog ref="folderDialogRef" :edit="isEdit" @ok="handleOk" />
+		<SSHModal ref="sshModalRef" />
 	</div>
 </template>
 
@@ -78,10 +89,11 @@ import { activeSession } from '@/layout/components/tabbar/tabs-utools'
 import NxFolderDialog from './components/FolderDialog.vue'
 import NSpace from '@/components/space'
 import { showContextMenu } from '@/components/menu/contextmenu'
+import { SSHModal } from '@/views/components'
 
 export default {
 	name: 'NxMenus',
-	components: { NSpace, NxFolderDialog },
+	components: { NSpace, NxFolderDialog, SSHModal },
 	data() {
 		return {
 			sessionConfigsTree: [],
@@ -90,6 +102,8 @@ export default {
 			showContentMenu: false,
 			highlightCurrent: true,
 			expandedKeys: [],
+			showBatchDeletion: false,
+			isIndeterminate: false,
 			sessionConfigsTreeContextMenu: {
 				folder: [
 					{
@@ -126,6 +140,11 @@ export default {
 						label: 'home.sessions-context-menu.rename',
 						type: 'normal',
 						handler: this.handleSessionTreeContextMenu_RenameFolder
+					},
+					{
+						label: 'batch-delete',
+						type: 'normal',
+						handler: () => (this.showBatchDeletion = true)
 					}
 				],
 				node: [
@@ -211,7 +230,8 @@ export default {
 		})
 		// 订阅会话创建事件
 		EventBus.subscript('create-session-toolbar', () => {
-			this.gotoCreateShellSession()
+			// this.gotoCreateShellSession()
+			this.$refs.sshModalRef?.showModal()
 		})
 		this.$nextTick(() => {
 			this.updateSessionTree()
@@ -249,7 +269,10 @@ export default {
 			this.expandedKeys = [node.key]
 		},
 		handleNodeCollapse(data, node, vnode, element) {
-			this.expandedKeys.splice(this.expandedKeys.findIndex(item => item === node.key), 1)
+			this.expandedKeys.splice(
+				this.expandedKeys.findIndex((item) => item === node.key),
+				1
+			)
 		},
 		handleNodeSelected(data, node, vnode, element) {
 			// 修复由于当前文件夹下子元素为0 导致tree无法触发原有打开关闭事件
@@ -314,8 +337,8 @@ export default {
 			const sessionConfig = this.$sessionManager.getSessionConfigById(_id)
 			const message =
 				sessionConfig.type === SESSION_CONFIG_TYPE.NODE
-					? this.T('home.host-manager.dialog-delete-confirm.delete-node', sessionConfig.name)
-					: this.T('home.host-manager.dialog-delete-confirm.delete-folder', sessionConfig.name)
+					? this.$t('home.host-manager.dialog-delete-confirm.delete-node', [sessionConfig.name])
+					: this.$t('home.host-manager.dialog-delete-confirm.delete-folder', [sessionConfig.name])
 			this.$confirm(message, this.T('home.host-manager.dialog-delete-confirm.title'), {
 				type: 'warning'
 			}).then(() => {
@@ -358,7 +381,10 @@ export default {
 				return
 			}
 			// 追加新的节点
-			const { data: { data: nodeData, node, treeNode }, operate } = pasteData
+			const {
+				data: { data: nodeData, node, treeNode },
+				operate
+			} = pasteData
 			const sourceSessionConfig = this.$sessionManager.getSessionConfigById(nodeData.id)
 			if (sourceSessionConfig) {
 				// 如果是剪切则移除旧节点数据
@@ -424,6 +450,7 @@ export default {
 	height: 100%;
 	background-color: var(--n-bg-color-base);
 	backdrop-filter: blur(5px);
+
 	.el-empty {
 		position: absolute;
 		top: 50%;
@@ -435,6 +462,13 @@ export default {
 				color: var(--n-text-color-base);
 			}
 		}
+	}
+
+	.batch-deletion {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 5px 0 5px 17px;
 	}
 
 	.pt-tree {

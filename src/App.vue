@@ -1,10 +1,6 @@
 <template>
-	<div id="app" class="main-window mycolor">
-		<nx-layout
-			:title="$t('app.powertools-shell')"
-			:isMainWindow="true"
-			:leftPanel="left_panel"
-			:topPanel="top_panel">
+	<div id="app" class="main-window">
+		<nx-layout>
 			<template slot="main-panel">
 				<keep-alive :exclude="['GlobalSetting']">
 					<router-view />
@@ -20,14 +16,12 @@ import { useAppStore } from '@/store/pinia'
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
 import { useRouter } from "@/hooks/vue-router-api";
-import * as EventBus from '@/services/eventbus'
+import { useI18n } from "vue-i18n-bridge";
 
 const appStore = useAppStore()
-const { theme, language, configPanel } = storeToRefs(appStore)
-const left_panel = ref(true)
-const top_panel = ref(true)
+const { theme, language } = storeToRefs(appStore)
 const router = useRouter()
-
+const { t } = useI18n()
 
 onMounted(() => {
 	appStore.changeTheme(theme.value)
@@ -36,26 +30,6 @@ onMounted(() => {
 			name: 'Home'
 		})
 	}
-	EventBus.subscript('enter-fullscreen', async () => {
-		try {
-			left_panel.value = false
-			top_panel.value = false
-			EventBus.publish('session-config-panel', 'close')
-			await document.body.requestFullscreen()
-		} catch (e) {
-			// pass
-		}
-	})
-	document.addEventListener('fullscreenchange', () => {
-		const isFullscreen = !!document.fullscreenElement
-		if (!isFullscreen) {
-			if (configPanel.value) {
-				EventBus.publish('session-config-panel', 'open')
-			}
-			left_panel.value = true
-			top_panel.value = true
-		}
-	})
 })
 
 </script>

@@ -1,12 +1,12 @@
 /**
  * 执行开发环境
- * 
+ *
  * 设置NODE_ENV为development
  * 设置其他环境变量：
  *     启动页地址：POWERTOOLS_DEV_START_URL
  *     设置服务路径：POWERTOOLS_DEV_SERVICE_PATH
  */
-const {exec} = require("child_process");
+const { exec } = require("child_process");
 const path = require("path")
 
 let injectAppPackage = {
@@ -34,6 +34,7 @@ let npmCmd = exec("npm run dev", {
 })
 
 npmCmd.stdout.on("data", (data) => {
+    console.log('监听Data1', data)
     process.stdout.write(data)
 });
 

@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="pt-menu-item"
-		:class="{'pt-menu-separator': item.type === 'separator'}"
+		:class="{ 'pt-menu-separator': item.type === 'separator' }"
 		@mouseenter="handleMouseEnter"
 		@mousedown="handleClick"
 	>
@@ -15,94 +15,78 @@
 			<pt-menu :menu="item.submenu" :translate="true" @pop-stack="showSubmenu = false" ref="submenu" />
 			<div class="pt-menu-item-container" slot="reference">
 				<span class="item-icon"><!--占位--></span>
-				<span class="item-label">{{ translate ? T(label) : label }}</span>
+				<span class="item-label">{{ translate ? t(label) : label }}</span>
 				<span class="item-accelerator">{{ accelerator }}</span>
 				<n-icon name="arrow-right" size="18" className="item-submenu-arrow" />
 			</div>
 		</el-popover>
 		<div v-else-if="item.type === 'normal'" class="pt-menu-item-container">
 			<span class="item-icon"><!--占位--></span>
-			<span class="item-label">{{ translate ? T(label) : label }}</span>
+			<span class="item-label">{{ translate ? t(label) : label }}</span>
 			<span class="item-accelerator">{{ accelerator }}</span>
 			<span class="item-submenu-arrow"><!--占位--></span>
 		</div>
 	</div>
 </template>
 
-<script>
-import { popMenu, pushMenu } from "./menuManager";
+<script lang="ts" setup name="PtMenuItem">
+import { popMenu, pushMenu } from './menuManager'
+import { useI18n } from 'vue-i18n-bridge'
+import { computed, getCurrentInstance, ref, defineComponent } from "vue";
 
-export default {
-	name: "PtMenuItem",
-	props: {
-		/**
-		 * item
-		 * {
-		 *     icon: ""
-		 *     type: "normal", "submenu", "separator"
-		 *     role: "",
-		 *     accelerator: '',
-		 *     label: '',
-		 *     handler: Function
-		 *     submenu: []
-		 * }
-		 */
-		item: {
-			type: Object
-		},
-		translate: {
-			type: Boolean,
-			default: false
-		},
-	},
+defineComponent({
+	name: 'defineComponent '
+})
+const { t } = useI18n()
+const submenu = ref()
+const props = withDefaults(defineProps<
+	{
+		item: any,
+		translate: boolean
+	}
+>(), {
+	item: {},
+	translate: false
+})
+const showSubmenu = ref(false)
 
-	data() {
-		return {
-			showSubmenu: false
-		};
-	},
+const label = computed(() => {
+	if (props.item.label) {
+		return props.item.label
+	}
+	return ''
+})
 
-	computed: {
-		label() {
-			const { item } = this;
-			if (item.label) {
-				return item.label;
-			}
-			return "";
-		},
-		accelerator() {
-			const { item } = this;
-			if (!item.accelerator) {
-				return "";
-			}
+const accelerator = computed(() => {
+	if (!props.item.accelerator) {
+		return ''
+	}
 
-			return item.accelerator.split("+").map((key) => {
-				key = key.trim().toLowerCase();
-				return key[0].toUpperCase() + key.substr(1)
-			}).join("+");
-		}
-	},
-
-	methods: {
-		handleMouseEnter() {
-			popMenu(this.$parent);
-			if (this.item.submenu && this.item.submenu.length) {
-				pushMenu(this.$refs.submenu);
-				this.showSubmenu = true;
-			}
-		},
-
-		handleClick() {
-			if (typeof this.item.handler === 'function') {
-				this.item.handler();
-			}
-		}
+	return props.item.accelerator
+		.split('+')
+		.map((key: string) => {
+			key = key.trim().toLowerCase()
+			return key[0].toUpperCase() + key.substr(1)
+		})
+		.join('+')
+})
+const instance = getCurrentInstance()
+const parent = instance?.proxy.$parent
+const handleMouseEnter = () => {
+	popMenu(parent)
+	if (props.item.submenu && props.item.submenu.length) {
+		pushMenu(submenu.value)
+		showSubmenu.value = true
+	}
+}
+const handleClick = () => {
+	if (typeof props.item.handler === 'function') {
+		props.item.handler()
 	}
 }
 </script>
-
 <style lang="scss" scoped>
-@import "@/assets/scss/_const.scss";
+@import '@/assets/scss/_const.scss';
 
 .nx-content-submenu {
 	left: 100px;

@@ -1,4 +1,5 @@
 import { SESSION_CONFIG_TYPE } from '@/services/sessionMgr'
+import useSessionStore from '@/store/modules/session'
 
 /**
  * 处理会话配置树
@@ -10,18 +11,19 @@ export function processSessionConfigTree(sessionConfigs, searchKeywords) {
         let reg = new RegExp(searchKeywords, 'i')
         matchFunc = (name) => reg.test(name)
     }
-
+    const sessionStore = useSessionStore()
+    const group = []
     const walkAndProcess = (parent, cfgNodes) => {
         for (const cfgNode of cfgNodes) {
             let treeNode = {
                 id: cfgNode._id, text: cfgNode.name, isFolder: false, data: cfgNode.toJSONObject(false)
             }
-
             const children = []
             if (cfgNode.type === SESSION_CONFIG_TYPE.FOLDER) {
                 walkAndProcess(children, cfgNode.subSessions)
                 treeNode.isFolder = true
                 treeNode.children = children
+                group.push({ label: cfgNode.name, value: cfgNode._id })
             }
             if (matchFunc(cfgNode.name) || children.length > 0) {
                 parent.push(treeNode)
@@ -30,6 +32,7 @@ export function processSessionConfigTree(sessionConfigs, searchKeywords) {
     }
     let treeRoot = []
     walkAndProcess(treeRoot, sessionConfigTree)
+    sessionStore.updateGroup(group)
     return treeRoot
 }
 

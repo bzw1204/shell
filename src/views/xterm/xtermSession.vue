@@ -58,7 +58,7 @@ export default {
 		},
 		backgroundColor() {
 			return {
-				backgroundColor: this.themes[this.currentSessionId]?.background || 'black'
+				backgroundColor: this.themes[this.currentSessionId]?.background || '#00000036'
 			}
 		},
 		toolbarShow() {
@@ -215,9 +215,9 @@ export default {
 			const sessionInstance = this.$sessionManager.getSessionInstanceById(this.currentSessionId)
 			const port = await sessionInstance.openTunnel()
 			if (port) {
-				this.updateTunnelTitle(this.currentSessionId, this.T('home.session-instance.tunnel-success', port))
+				this.updateTunnelTitle(this.currentSessionId, this.$t('home.session-instance.tunnel-success', [port]))
 			} else {
-				this.updateTunnelTitle(this.currentSessionId, this.T('home.session-instance.tunnel'))
+				this.updateTunnelTitle(this.currentSessionId, this.$t('home.session-instance.tunnel'))
 			}
 		},
 
