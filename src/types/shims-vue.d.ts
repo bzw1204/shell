@@ -9,8 +9,3 @@ declare module '*.vue' {
     export default componentOptions
 
 }
-
-// *.d.ts文件中
-// declare interface Window {
-//     powertools: Record<any, any>
-// }

@@ -10,12 +10,12 @@ import pinia from '@/store/pinia'
 import Element from './element'
 import '@/icons'
 import i18n from '@/local'
-import i18nMixins from '@/hooks/use-i18n'
+// import i18nMixins from '@/hooks/use-i18n'
 
 Vue.use(PtComponents)
 Vue.use(PtSessionManger)
 Vue.use(Element)
-Vue.mixin(i18nMixins)
+// Vue.mixin(i18nMixins)
 Vue.config.productionTip = false
 
 !(async function () {

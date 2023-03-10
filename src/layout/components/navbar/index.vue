@@ -209,6 +209,7 @@ onMounted(() => {
 	}
 
 	.icon-setting-container {
+		padding-bottom: 10px;
 		::v-deep .el-button {
 			width: 40px;
 

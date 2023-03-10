@@ -5,7 +5,7 @@
 			<el-tooltip
 				class="item"
 				effect="dark"
-				:content="T('home.session-instance.duplicate-session')"
+				:content="$t('home.session-instance.duplicate-session')"
 				placement="top-start"
 			>
 				<span class="btn" @click="copySession">
@@ -15,14 +15,14 @@
 			<el-tooltip
 				class="item"
 				effect="dark"
-				:content="T('home.session-instance.reconnect')"
+				:content="$t('home.session-instance.reconnect')"
 				placement="top-start"
 			>
 				<span class="btn" @click="reconSession">
 					<i class="el-icon-refresh" />
 				</span>
 			</el-tooltip>
-			<el-tooltip class="item" effect="dark" :content="T('home.session-instance.SFTP')" placement="top-start">
+			<el-tooltip class="item" effect="dark" :content="$t('home.session-instance.SFTP')" placement="top-start">
 				<span class="btn" @click="openSFTP">
 					<i class="el-icon-folder-opened" />
 				</span>
@@ -243,7 +243,7 @@ export default {
 		tunnelTitle() {
 			return this.tunnelMapTitle[this.sessionInstanceId]
 				? this.tunnelMapTitle[this.sessionInstanceId]
-				: this.T('home.session-instance.tunnel')
+				: this.$t('home.session-instance.tunnel')
 		}
 	},
 
@@ -318,7 +318,7 @@ export default {
 			if (port) {
 				this.updateTunnelTitle(this.sessionInstanceId, this.$t('home.session-instance.tunnel-success', [port]))
 			} else {
-				this.updateTunnelTitle(this.sessionInstanceId, this.T('home.session-instance.tunnel'))
+				this.updateTunnelTitle(this.sessionInstanceId, this.$t('home.session-instance.tunnel'))
 			}
 		},
 
@@ -387,6 +387,7 @@ export default {
 			})
 
 			this.sessionInstance.on('control', (data) => {
+				console.log('控制住数据',data)
 				this.$refs.dialog.show(data)
 			})
 

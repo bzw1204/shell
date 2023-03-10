@@ -22,6 +22,7 @@ import PtXterm from "./xterm/xterm";
 import PtMenuManager from "./menu/menuManager";
 import PtContextMenu from "./menu/contextmenu";
 import NSpace from './space/index.vue'
+import NxModal from './modal/NxModal.vue'
 
 const components = [
     PtFile,
@@ -33,7 +34,8 @@ const components = [
     PtMenu,
     PtMenuItem,
     PtToolbar,
-    PtXterm
+    PtXterm,
+    NxModal
 ];
 
 export default {

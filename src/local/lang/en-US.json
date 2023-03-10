@@ -1,5 +1,4 @@
 {
-
     "lock": {
         "lock_desc": "Lock Setting",
         "password_desc": "Password Code",
@@ -126,7 +125,7 @@
                     "description": "The host name can use characters or numbers, which is required."
                 },
                 "os": {
-                    "title":"Operating system",
+                    "title": "Operating system",
                     "description": "The operating system type of the host, such as Ubuntu/Redhat/CentOS, and also can be set to auto detection.",
                     "options": {
                         "auto": "auto detection"
@@ -434,7 +433,6 @@
                 "send-one": "Current SSH Terminal",
                 "lock": "Lock Sessions",
                 "select-all": "Select All"
-
             },
             "delete-dialog": {
                 "title": "Close Session Instance",
@@ -510,12 +508,12 @@
             "rename-dialog": {
                 "title": "Rename",
                 "placeholder": "Please enter the new name",
-                "invalid-name":"Following charactors are invalid: \\ / : * ? \" < > | "
+                "invalid-name": "Following charactors are invalid: {0}"
             },
             "chmod-dialog": {
                 "title": "Chmod",
                 "placeholder": "Please enter the new permissions",
-                "invalid-permissions":"Following permission invalid"
+                "invalid-permissions": "Following permission invalid"
             },
             "move-dialog": {
                 "title": "Move"
@@ -524,7 +522,7 @@
                 "title": "Create direcotry",
                 "name": "Directory name",
                 "placeholder": "Please enter the name for the directory",
-                "invalid-dir-name": "Following characters are invalid: \\ / : * ? \" < > | "
+                "invalid-dir-name": "Following characters are invalid: {0}"
             },
             "confirm-dialogs": {
                 "delete-file": {
@@ -533,7 +531,7 @@
                 },
                 "delete-dir": {
                     "title": "Delete directory",
-                    "message":"Are you sure to delete directory {0} ？All sub directorys and files under this directory will be deleted recursively!"
+                    "message": "Are you sure to delete directory {0} ？All sub directorys and files under this directory will be deleted recursively!"
                 },
                 "delete-many": {
                     "title": "Delete multiple items",
@@ -614,6 +612,9 @@
                     "file": "File"
                 }
             }
+        },
+        "sftp": {
+            "err-dialog-title": "Operation Error"
         }
     }
 }

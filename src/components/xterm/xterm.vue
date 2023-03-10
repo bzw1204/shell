@@ -5,7 +5,7 @@
 				<el-input
 					ref="searchInputRef"
 					v-model="searchWord"
-					:placeholder="T('components.pt-xterm.search-placeholder')"
+					:placeholder="$t('components.pt-xterm.search-placeholder')"
 					slot="center"
 					@keydown.enter.native="searchDown"
 				/>
@@ -15,7 +15,7 @@
 					<el-tooltip
 						class="item"
 						effect="dark"
-						:content="T('components.pt-xterm.search-up')"
+						:content="$t('components.pt-xterm.search-up')"
 						placement="top-start"
 					>
 						<n-icon name="direction-up" @click="searchUp" />
@@ -23,7 +23,7 @@
 					<el-tooltip
 						class="item"
 						effect="dark"
-						:content="T('components.pt-xterm.search-down')"
+						:content="$t('components.pt-xterm.search-down')"
 						placement="top-start"
 					>
 						<n-icon name="direction-down" @click="searchDown" />
@@ -31,7 +31,7 @@
 					<el-tooltip
 						class="item"
 						effect="dark"
-						:content="T('components.pt-xterm.search-close')"
+						:content="$t('components.pt-xterm.search-close')"
 						placement="top-start"
 					>
 						<n-icon name="close" @click="searchClose" />
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<div class="keyboard-input" v-show="sendToAllTerm">
-			<div>{{ T('components.pt-xterm.keyboard-input-note') }}</div>
+			<div>{{ $t('components.pt-xterm.keyboard-input-note') }}</div>
 			<el-switch v-model="showOn" @change="keyboardInputAllow" />
 		</div>
 		<div ref="xtermContainer" class="xterm-container" @click="onXtermFocus"></div>
@@ -49,7 +49,7 @@
 			class="xterm-link-tip"
 			:style="{ left: urlTipPosition.left + 'px', top: urlTipPosition.top + 'px' }"
 		>
-			{{ T('components.pt-xterm.open-url') }}
+			{{ $t('components.pt-xterm.open-url') }}
 		</div>
 	</div>
 </template>
@@ -483,13 +483,15 @@ export default {
 
 	.xterm-search {
 		position: absolute;
+		top: 0;
+		left: 0;
+		backdrop-filter: blur(5px);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		width: calc(100% - 10px);
+		width: 100%;
 		height: 40px;
-		opacity: 0.9;
 		z-index: 999;
 		padding: 0 5px;
 		box-sizing: border-box;

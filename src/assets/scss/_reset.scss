@@ -351,3 +351,9 @@ a {
   }
 
 }
+
+.popper__arrow {
+  &::after {
+    bottom: -1 !important;
+  }
+}

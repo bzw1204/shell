@@ -16,7 +16,7 @@
 			>
 				<n-space size="5" fill>
 					<n-icon size="18" :name="item.icon.iconName" :type="item.icon.type" />
-					<span>{{ T(item.title) }}</span>
+					<span>{{ $t(item.title) }}</span>
 				</n-space>
 				<span v-if="sessionInstTabs.length !==1 || sessionInstTabs[0].data.type !== 'welcome'" class="tabs-item__close" @click="handleSessionInstRemove(index)">
 					<i class="el-icon-close"></i>
@@ -134,8 +134,8 @@ export default {
 				return
 			} else if (session.type === 'editor') {
 				this.$confirm(
-					this.T("home.session-instance.save-dialog.message"),
-					this.T("home.session-instance.save-dialog.title"),
+					this.$t("home.session-instance.save-dialog.message"),
+					this.$t("home.session-instance.save-dialog.title"),
 					{
 						cancelButtonText: '不保存',
 						showClose: false
@@ -157,7 +157,7 @@ export default {
 			const isEditor = session && session.type === 'editor'
 			const h = this.$createElement;
 			this.$msgbox({
-				title: this.T(`home.session-instance.${ isEditor ? 'save-dialog.title' : 'delete-dialog.message' }`),
+				title: this.$t(`home.session-instance.${ isEditor ? 'save-dialog.title' : 'delete-dialog.message' }`),
 				message: h('div',
 					{
 						style: 'display:flex;flex-direction: column;row-gap: 20px'
@@ -172,7 +172,7 @@ export default {
 									class: 'el-icon-warning',
 									style: 'font-size: 20px;color: #E6A23C'
 								}),
-								this.T(`home.session-instance.${ isEditor ? 'save-dialog.message' : 'delete-dialog.title' }`)
+								this.$t(`home.session-instance.${ isEditor ? 'save-dialog.message' : 'delete-dialog.title' }`)
 							]
 						),
 						h('el-checkbox', {
@@ -190,8 +190,8 @@ export default {
 				showClose: false,
 				showCancelButton: true,
 				closeOnClickModal: false,
-				cancelButtonText: this.T('components.Cancel'),
-				confirmButtonText: this.T('components.OK')
+				cancelButtonText: this.$t('components.Cancel'),
+				confirmButtonText: this.$t('components.OK')
 			}).then(() => {
 				session.beforeClose()
 				session.close()

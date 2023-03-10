@@ -49,11 +49,22 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import xtermTheme from "xterm-theme";
 import { onMounted, ref, watch, watchEffect } from "vue";
 
-const props = defineProps({
+interface IThemeConfig {
+	themeName: string
+	fontFamily: string
+	fontSize: string
+	fontWeight: string
+	lineHeight: string
+	letterSpacing: string
+	cursorStyle: string
+	cursorBlink: boolean
+}
+
+const props = withDefaults(defineProps<IThemeConfig>(), {
 	themeName: '',
 	fontFamily: '',
 	fontSize: '12px',
@@ -64,9 +75,9 @@ const props = defineProps({
 	cursorBlink: false
 })
 const ignoreProps = ['background', 'cursor', 'cursorAccent', 'foreground', 'selection']
-const colorList = ref([])
-const currentTheme = ref({})
-const CURSOR_STYLE = { block: "█", bar: "|", underline: "▁" }
+const colorList = ref<Record<string, any>[]>([])
+const currentTheme = ref<Record<string, any>>({})
+const CURSOR_STYLE: Record<string, any> = { block: "█", bar: "|", underline: "▁" }
 const cursorStyle = ref("█")
 const themeStyle = ref({})
 

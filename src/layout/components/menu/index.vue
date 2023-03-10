@@ -43,7 +43,7 @@
 						<el-tooltip
 							v-if="data.type === 'node' && data.config.protocal === 'ssh'"
 							effect="dark"
-							:content="T('home.sessions-context-menu.sftp')"
+							:content="$t('home.sessions-context-menu.sftp')"
 							placement="top-start"
 						>
 							<span class="session-extend" @click.stop="handleOpenSFTP(data)">
@@ -55,11 +55,11 @@
 			</el-tree>
 			<el-empty
 				v-if="!isSearch && sessionConfigsTree.length === 0"
-				:description="T('home.host-manager.session-tree.no-session-data')"
+				:description="$t('home.host-manager.session-tree.no-session-data')"
 			/>
 			<el-empty
 				v-if="isSearch && sessionConfigsTree.length === 0"
-				:description="T('home.host-manager.session-tree.no-search-result')"
+				:description="$t('home.host-manager.session-tree.no-search-result')"
 			/>
 		</el-scrollbar>
 		<!--编辑文件夹-->
@@ -339,7 +339,7 @@ export default {
 				sessionConfig.type === SESSION_CONFIG_TYPE.NODE
 					? this.$t('home.host-manager.dialog-delete-confirm.delete-node', [sessionConfig.name])
 					: this.$t('home.host-manager.dialog-delete-confirm.delete-folder', [sessionConfig.name])
-			this.$confirm(message, this.T('home.host-manager.dialog-delete-confirm.title'), {
+			this.$confirm(message, this.$t('home.host-manager.dialog-delete-confirm.title'), {
 				type: 'warning'
 			}).then(() => {
 				this.$sessionManager.removeSessionConfig(sessionConfig)
@@ -428,7 +428,7 @@ export default {
 		 */
 		async gotoCreateShellSession() {
 			const sessionConfig = this.$sessionManager.createShellSessionConfig(
-				this.T('home.profile.default-session-name')
+				this.$t('home.profile.default-session-name')
 			)
 			this.addSessionConfig(sessionConfig)
 			await this.$sessionManager.createShellSettingSessionInstance(sessionConfig)

@@ -30,7 +30,7 @@
 					}"
 					@click.self="handleSort(column.dataKey)"
 				>
-					{{ T(column.label) }}
+					{{ $t(column.label) }}
 					<span class="resize" v-mouse-drag="getColumnResizeHandler(idx)">|</span>
 				</div>
 			</div>

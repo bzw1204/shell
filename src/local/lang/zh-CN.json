@@ -510,7 +510,7 @@
             "rename-dialog": {
                 "title": "重命名",
                 "placeholder": "请输入新的名称",
-                "invalid-name": "文件夹或文件名称不能包含如下字符：\\ / : * ? \" < > | "
+                "invalid-name": "文件夹或文件名称不能包含如下字符：{0} "
             },
             "chmod-dialog": {
                 "title": "修改文件权限",
@@ -524,7 +524,7 @@
                 "title": "创建文件夹",
                 "name": "文件夹名称",
                 "placeholder": "请输入文件夹名称",
-                "invalid-dir-name": "文件夹名称不能包含如下字符：\\ / : * ? \" < > | "
+                "invalid-dir-name": "文件夹名称不能包含如下字符：{0}"
             },
             "confirm-dialogs": {
                 "delete-file": {
@@ -614,6 +614,9 @@
                     "file": "文件"
                 }
             }
+        },
+        "sftp": {
+            "err-dialog-title": "操作异常"
         }
     }
 }

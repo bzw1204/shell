@@ -6,7 +6,7 @@
 			</span>
 			<p class="n-logo-text">NxShell</p>
 		</div>
-		<h1>{{ T('app.welcome') }}</h1>
+		<h1>{{ $t('app.welcome') }}</h1>
 		<div class="n-home-footer">
 			<div class="n-home-footer__feedback">
 				<n-space :size="20">
@@ -16,11 +16,11 @@
 					</el-link>
 					<el-link :underline="false" @click="toIssues">
 						<n-icon name="bug" />
-						{{ T('home.welcome.reportProblem') }}
+						{{ $t('home.welcome.reportProblem') }}
 					</el-link>
 				</n-space>
 			</div>
-			<div class="n-home-footer__version">{{ T('home.welcome.software-version') }} {{ version }}</div>
+			<div class="n-home-footer__version">{{ $t('home.welcome.software-version') }} {{ version }}</div>
 		</div>
 	</div>
 </template>
