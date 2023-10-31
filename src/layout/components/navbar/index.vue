@@ -14,6 +14,10 @@
 				<!-- 头像 -->
 				<!--<el-avatar v-show="true" shape="square" fit="fill" :src="avatarUrl" @click="goto_login" />-->
 				<el-button v-if="false" type="text" icon="el-icon-user" @click="goLogin" />
+				<!-- 语言切换 -->
+				<el-button type="text" @click="syncCloud">
+					<n-icon name="cloud" size="22" />
+				</el-button>
 				<!-- 主题切换按钮 -->
 				<el-dropdown trigger="click" placement="bottom-end" @command="toggleTheme">
 					<el-button type="text" :icon="themeIconConstants[theme]" />
@@ -44,6 +48,7 @@
 				</el-tooltip>
 			</n-space>
 		</div>
+		<CloudData ref="cloudDataRef" />
 	</div>
 </template>
 
@@ -57,8 +62,10 @@ import semver from "semver"
 import { getCurrentInstance, onMounted, ref } from "vue"
 import { useI18n } from "vue-i18n-bridge"
 import { getProfile, updateProfile } from "@/services/globalSetting"
+import CloudData from "@/components/cloud/cloud-data.vue"
 
 const { t, locale } = useI18n()
+const cloudDataRef = ref()
 const IS_MACOS = /macintosh/i.test(navigator.userAgent)
 const version = ref("V1.0.0")
 const needUpdate = ref(false)
@@ -146,11 +153,13 @@ const handlerVersionUpdate = async () => {
 
 const changeLanguage = () => {
 	const language = locale.value === "zh-CN" ? "en-US" : "zh-CN"
-	updateProfile("xterm", { "language": language })
+	updateProfile("xterm", { language: language })
 	// settingStore.changeLanguage()
 	locale.value = language
 }
-
+const syncCloud = () => {
+	cloudDataRef.value?.show()
+}
 onMounted(() => {
 	version.value = window.powertools.getVersion()
 	checkAppUpdate()

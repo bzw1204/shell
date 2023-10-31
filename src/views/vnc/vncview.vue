@@ -3,7 +3,7 @@
 		<pt-toolbar :height="40">
 			<n-icon
 				name="copy"
-				slot="left"
+				v-slot="left"
 				size="medium"
 				:title="$t('home.session-instance.ctrldelete')"
 				flat
@@ -11,15 +11,16 @@
 			/>
 			<n-icon
 				name="refresh"
-				slot="left"
+				v-slot="left"
 				:title="$t('home.session-instance.reconnect')"
+				:size="24"
 				@click="reconnect"
 			/>
-			<el-input v-model="url" readonly slot="center" />
+			<el-input v-model="url" readonly v-slot="center" />
 			<n-icon
 				type="img"
 				:name="shutdownIcon"
-				slot="right"
+				v-slot="right"
 				size="24"
 				:title="$t('home.session-instance.shutdown')"
 				@click="shutdown"
@@ -72,9 +73,6 @@ export default {
 	},
 
 	methods: {
-		handleAuthOk(data) {
-			this.sessionInstance.sendControlData(data)
-		},
 		init() {
 			// RFB holds the API to connect and communicate with a VNC server
 			let rfb
@@ -96,10 +94,10 @@ export default {
 			this.port = config.hostVncPort
 			this.password = config.password
 			this.username = config.username
-			this.url = `vnc://${this.host}:${this.port}`
+			this.url = `vnc://${ this.host }:${ this.port }`
 
 			this.status('Connecting')
-			let url = `ws://${this.host}:${this.port}`
+			let url = `ws://${ this.host }:${ this.port }`
 			// Creating a new RFB object will start a new connection
 			rfb = new RFB(this.$refs.screen, url)
 			this.rfb = rfb
@@ -133,7 +131,7 @@ export default {
 		},
 		credentialsAreRequired(e) {
 			if (this.username && this.password) {
-				this.rfb.sendCredentials({username: this.username, password: this.password})
+				this.rfb.sendCredentials({ username: this.username, password: this.password })
 				return
 			}
 			let auths = e.detail.types
@@ -147,7 +145,7 @@ export default {
 			}
 			this.cur_auth = auths.shift()
 			this.auths = auths
-			this.$refs.dialog.show({type: 'authPrompt', data: [{prompt: this.cur_auth}]})
+			this.$refs.dialog.show({ type: 'authPrompt', data: [{ prompt: this.cur_auth }] })
 		},
 		handleAuthOk(e) {
 			if (e.type !== 'cannel') {
@@ -195,7 +193,7 @@ export default {
 		},
 
 		warn(info) {
-			this.$confirm(info, 'VNC', {type: 'warning'})
+			this.$confirm(info, 'VNC', { type: 'warning' })
 		}
 	},
 
