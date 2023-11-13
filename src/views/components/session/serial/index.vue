@@ -205,20 +205,19 @@
 	</el-dialog>
 </template>
 <script setup>
-import { onMounted } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import { querySearch } from '@/icons/system-icon'
 import { publish } from '@/services/eventbus'
 import { SESSION_CONFIG_TYPE, SessionConfig } from '@/services/sessionMgr'
 import { useSessionStore } from '@/store'
 import { storeToRefs } from 'pinia'
-import { getCurrentInstance, ref } from 'vue'
 import { useI18n } from 'vue-i18n-bridge'
 import {
-	defaultForm,
 	baudRateOptions,
-	parityOptions,
-	flowControlOptions,
 	dataBitsOptions,
+	defaultForm,
+	flowControlOptions,
+	parityOptions,
 	stopBitsOptions
 } from './constants'
 import { initDefaultThemeOptions } from '../constants'
@@ -238,16 +237,18 @@ const telnetFormRules = {
 const sessionStore = useSessionStore()
 const { group } = storeToRefs(sessionStore)
 const activeTab = ref('base')
-const serialPorts = ref(['COM1'])
+const serialPorts = ref([])
 const isEdit = ref(false)
 const proxy = getCurrentInstance().proxy
 const sessionManager = proxy.$sessionManager
 const sessionConfig = ref()
+const sessionInstance = ref()
 
-const showModal = (sessionId) => {
+const showModal = async (sessionId) => {
 	if (sessionId) {
 		isEdit.value = true
 		sessionConfig.value = sessionManager.getSessionConfigById(sessionId)
+		sessionInstance.value = sessionManager.getSessionInstanceById(sessionId)
 		// 移除旧会话中无用属性
 		const newFormKeys = Object.keys(sessionForm.value)
 		const oldFormKeys = Object.keys(sessionConfig.value.config)
@@ -260,6 +261,13 @@ const showModal = (sessionId) => {
 		}
 		sessionForm.value = { ...sessionForm.value, ...sessionConfig.value.config }
 	}
+	// 创建会话配置
+	sessionConfig.value = new SessionConfig(
+		sessionForm.value.hostName,
+		SESSION_CONFIG_TYPE.NODE,
+		sessionForm.value,
+		'telnet session'
+	)
 	visible.value = true
 }
 
@@ -315,8 +323,10 @@ const handlerClose = () => {
 	visible.value = false
 }
 
-onMounted(async () => {
-	serialPorts.value = await sessionInstance.getSerialPorts()
+onMounted(() => {
+	powertools.getService().getSerialPorts().then(res => {
+		serialPorts.value = res.map(x => x.path)
+	})
 })
 defineExpose({ showModal })
 </script>

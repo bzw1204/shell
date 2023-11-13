@@ -125,7 +125,7 @@ watchEffect(() => {
 	})
 	// 监听数据是否有变化
 	nxTabsStore.updateEditChange(editorInstance.value?.state.doc.toString() !== oldValue.value)
-	searchCursor.value = new SearchCursor(editorInstance.value.state.doc, searchKeyWords.value)
+	searchCursor.value = new SearchCursor(editorInstance.value?.state.doc, searchKeyWords.value)
 })
 
 const save = async () => {
