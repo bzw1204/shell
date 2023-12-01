@@ -325,7 +325,7 @@ const handlerClose = () => {
 
 onMounted(() => {
 	powertools.getService().getSerialPorts().then(res => {
-		serialPorts.value = res.map(x => x.path)
+		serialPorts.value = res.map(x => x.path).sort()
 	})
 })
 defineExpose({ showModal })
